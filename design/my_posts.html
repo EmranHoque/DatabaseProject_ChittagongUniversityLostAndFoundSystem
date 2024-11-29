@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Posts - CU Lost & Found</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white custom-shadow">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-purple-600 text-xl font-bold gradient-text">CU Lost & Found</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="index.html" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Home</a>
+                    <a href="posts.html" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Browse Posts</a>
+                    <a href="create_post.html" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Create Post</a>
+                    <!-- <a href="my_reports.html" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">My Posts</a> -->
+                    <a href="signOut.html" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- My Reports Section -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-semibold text-gray-900">My Posts</h2>
+            <div class="mt-6 space-y-6">
+                <!-- Lost Items -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold text-gray-800">Lost Items</h3>
+                    <div class="space-y-4 mt-4">
+                        <!-- Example Lost Post -->
+                        <div class="flex justify-between items-center border-b py-4">
+                            <div>
+                                <p class="text-xl font-semibold text-gray-900">Lost Black Bagpack</p>
+                                <p class="text-sm text-gray-500">Category: Bags</p>
+                                <p class="text-sm text-gray-500">Posted on: 2024-11-23</p>
+                            </div>
+                            <div class="space-x-4">
+                                <button class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-400 transition duration-300">
+                                    Edit
+                                </button>
+                                <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400 transition duration-300">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Repeat for other lost items -->
+                    </div>
+                </div>
+
+                <!-- Found Items -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold text-gray-800">Found Items</h3>
+                    <div class="space-y-4 mt-4">
+                        <!-- Example Found Post -->
+                        <!-- <div class="flex justify-between items-center border-b py-4">
+                            <div>
+                                <p class="text-xl font-semibold text-gray-900">Found HP Laptop</p>
+                                <p class="text-sm text-gray-500">Category: Electronics</p>
+                                <p class="text-sm text-gray-500">Posted on: 2024-11-19</p>
+                            </div>
+                            <div class="space-x-4">
+                                <button class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-400 transition duration-300">
+                                    Edit
+                                </button>
+                                <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-400 transition duration-300">
+                                    Delete
+                                </button>
+                            </div>
+                        </div> -->
+                        <!-- Repeat for other found items -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create New Report Button -->
+            <!-- <div class="mt-8">
+                <a href="create_post.html" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">
+                    Create New Report
+                </a>
+            </div> -->
+        </div>
+    </section>
+
+    <footer class="bg-white custom-shadow mt-12 py-4">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600">
+            Developed by Md. Emranul Hoque
+        </div>
+    </footer>
+</body>
+</html>
