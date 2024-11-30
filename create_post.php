@@ -49,7 +49,7 @@ $categories = $pdo->query($sql)->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Post - CU Lost & Found</title>
+    <title>Create Post - Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -130,3 +130,7 @@ $categories = $pdo->query($sql)->fetchAll();
     
 </body>
 </html>
+
+
+
+<?php include 'templates/footer.php'; ?>

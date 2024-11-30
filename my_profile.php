@@ -29,12 +29,13 @@ $stmt_posts = $pdo->prepare($sql_posts);
 $stmt_posts->execute(['user_id' => $user_id]);
 $posts = $stmt_posts->fetchAll();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard - CU Lost & Found</title>
+    <title>User Dashboard - Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -116,3 +117,5 @@ $posts = $stmt_posts->fetchAll();
     
 </body>
 </html>
+
+<?php include 'templates/footer.php'; ?>

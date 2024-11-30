@@ -44,7 +44,7 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posts - CU Lost & Found</title>
+    <title>Posts - Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css"> 
 </head>
@@ -142,3 +142,5 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
 
 </body>
 </html>
+
+<?php include 'templates/footer.php'; ?>

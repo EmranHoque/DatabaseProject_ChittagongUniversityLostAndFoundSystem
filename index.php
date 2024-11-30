@@ -5,12 +5,13 @@ session_start();
 $loggedIn = isset($_SESSION['user_id']) ? true : false;
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CU Lost & Found</title>
+    <title>Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -97,38 +98,7 @@ $loggedIn = isset($_SESSION['user_id']) ? true : false;
         </div>
     </section>
 
-   <!-- Footer -->
-<footer class="bg-gray-800 text-white py-8 mt-12">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- About Us -->
-            <div>
-                <h3 class="text-xl font-bold">About Us</h3>
-                <p class="mt-4 text-gray-400">
-                    Chittagong University Lost and Found System is a web-based platform designed to help the university community manage lost and found items effectively. Our mission is to provide a centralized system to report lost or found items, browse through the posts and get the belongings to their rightful owners.
-                </p>
-            </div>
-
-            <!-- Contact Us -->
-            <div>
-                <h3 class="text-xl font-bold">Contact Us</h3>
-                <p class="mt-4 text-gray-400">Have questions or need help? Reach out to us:</p>
-                <p class="mt-2">
-                    <a href="mailto:cu_lostandfound@gmail.com" class="text-purple-400 hover:text-purple-600">
-                        cu_lostandfound@gmail.com 
-                    </a>
-                </p>
-                <p class="mt-2 text-gray-400">Phone: (+88) 01881-726226</p>
-            </div>
-        </div>
-
-        <!-- Footer Bottom -->
-        <div class="border-t border-gray-700 mt-8 pt-4 text-center">
-            <p class="text-sm">Developed by Md. Emranul Hoque.</p>
-            <p class="text-sm">© 2024 CU Lost & Found. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
-
 </body>
 </html>
+
+<?php include 'templates/footer.php'; ?>

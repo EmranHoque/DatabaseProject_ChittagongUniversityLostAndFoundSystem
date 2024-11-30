@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Details - CU Lost & Found</title>
+    <title>Post Details - Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -217,3 +217,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
 </body>
 
 </html>
+
+<?php include 'templates/footer.php'; ?>

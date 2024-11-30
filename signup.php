@@ -2,29 +2,45 @@
 require 'includes/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $password = $_POST['password'];
 
-    // Validate email
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Server-side validation
+    if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
+        $error = "Name can only contain letters and spaces.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email format.";
-    }
-    // Validate Bangladeshi phone number
-    elseif (!preg_match('/^01[3-9][0-9]{8}$/', $phone)) {
-        $error = "Invalid phone number";
+    } elseif (!preg_match('/^01[3-9][0-9]{8}$/', $phone)) {
+        $error = "Invalid phone number.";
+    } elseif (strlen($password) < 8 || 
+              !preg_match('/[A-Z]/', $password) || 
+              !preg_match('/[a-z]/', $password) || 
+              !preg_match('/[0-9]/', $password) || 
+              !preg_match('/[\W_]/', $password)) {
+        $error = "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.";
     } else {
-        // If validation passes, attempt to save the data
+        // If validation passes, hash the password
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        // Prepare the SQL statement
         $sql = "INSERT INTO user (name, email, phone_number, password) VALUES (:name, :email, :phone, :password)";
         $stmt = $pdo->prepare($sql);
 
         try {
-            $stmt->execute(['name' => $name, 'email' => $email, 'phone' => $phone, 'password' => $password]);
+            $stmt->execute([
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone,
+                'password' => $hashedPassword,
+            ]);
             header('Location: login.php');
             exit;
         } catch (PDOException $e) {
-            $error = "Error: " . $e->getMessage();
+            // Log the error to a file
+            error_log($e->getMessage(), 3, 'errors.log');
+            $error = "An error occurred while processing your request. Please try again later.";
         }
     }
 }
@@ -35,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - CU Lost & Found</title>
+    <title>Sign Up - Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -45,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <span class="text-purple-600 text-xl font-bold gradient-text">CU Lost & Found</span>
+                    <span class="text-purple-600 text-xl font-bold gradient-text">Chittagong University Lost & Found</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="index.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Home</a>
@@ -99,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p class="text-sm text-gray-600">Already have an account? <a href="login.php" class="text-purple-600 hover:underline">Log In</a></p>
         </div>
     </div>
-
-    
 </body>
 </html>
+<?php include 'templates/footer.php'; ?>

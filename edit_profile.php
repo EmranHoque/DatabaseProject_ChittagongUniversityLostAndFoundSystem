@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile - CU Lost & Found</title>
+    <title>Edit Profile - Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -119,3 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
 </body>
 </html>
+
+
+
+<?php include 'templates/footer.php'; ?>

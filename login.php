@@ -4,21 +4,37 @@ require 'includes/db.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM user WHERE email = :email";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['email' => $email]);
-    $user = $stmt->fetch();
-
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['name'] = $user['name'];
-        header('Location: index.php');
-        exit;
+    // Email sanitization
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format.";
     } else {
-        $error = "Invalid credentials.";
+        $sql = "SELECT * FROM user WHERE email = :email";
+        $stmt = $pdo->prepare($sql);
+
+        try {
+            $stmt->execute(['email' => $email]);
+            $user = $stmt->fetch();
+
+            if ($user && password_verify($password, $user['password'])) {
+                // Secure the session
+                session_regenerate_id(true);
+
+                $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['name'] = $user['name'];
+
+                header('Location: index.php');
+                exit;
+            } else {
+                $error = "Invalid email or password.";
+            }
+        } catch (PDOException $e) {
+            // Log the database error
+            error_log($e->getMessage(), 3, 'errors.log');
+            $error = "An error occurred. Please try again later.";
+        }
     }
 }
 ?>
@@ -28,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authentication - CU Lost & Found</title>
+    <title>Authentication - Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -38,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <span class="text-purple-600 text-xl font-bold gradient-text">CU Lost & Found</span>
+                    <span class="text-purple-600 text-xl font-bold gradient-text">Chittagong University Lost & Found</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="index.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Home</a>
@@ -74,14 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="flex justify-center items-center">
                 <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">Log In</button>
             </div>
-
         </form>
 
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-600">Don't have an account? <a href="signup.php" class="text-purple-600 hover:underline">Sign Up</a></p>
         </div>
     </div>
-
-    
 </body>
 </html>
+
+<?php include 'templates/footer.php'; ?>
