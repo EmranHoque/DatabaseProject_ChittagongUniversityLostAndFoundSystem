@@ -1,6 +1,7 @@
 <?php
 require 'includes/db.php';
 session_start();
+include 'templates/header.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -39,21 +40,7 @@ $posts = $stmt_posts->fetchAll();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white custom-shadow">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <span class="text-purple-600 text-xl font-bold gradient-text">Chittagong University Lost & Found</span>
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="index.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Home</a>
-                    <a href="posts.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Browse Posts</a>
-                    <a href="signOut.php" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">Log Out</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+<body class="bg-gray-200">
     <!-- My Profile Section -->
     <div class="max-w-7xl mx-auto py-12 px-4 space-y-12">
         <!-- Profile Section -->

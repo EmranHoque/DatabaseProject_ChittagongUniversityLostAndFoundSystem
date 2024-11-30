@@ -1,7 +1,7 @@
 <?php
 require 'includes/db.php';
 session_start();
-
+include 'templates/header.php'; 
 // Redirect to login if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-200">
     <!-- Navigation -->
     <nav class="bg-white custom-shadow">
         <div class="max-w-7xl mx-auto px-4">

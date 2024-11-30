@@ -2,6 +2,14 @@
 require 'includes/db.php';
 session_start();
 
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');  
+    exit;
+}
+
+include 'templates/header.php';
+
 if (!isset($_GET['post_id'])) {
     header('Location: posts.php');
     exit;
@@ -32,6 +40,9 @@ $sql = "SELECT com.*, u.name AS commenter_name
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['post_id' => $post_id]);
 $comments = $stmt->fetchAll();
+
+// ... (rest of your code remains unchanged)
+?>
 
 
 $editing_comment_id = null;
@@ -108,22 +119,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <span class="text-purple-600 text-xl font-bold">Chittagong University Lost & Found</span>
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="index.php" class="text-gray-700 hover:text-purple-600 px-3 py-2">Home</a>
-                    <a href="posts.php" class="text-gray-700 hover:text-purple-600 px-3 py-2">Browse Posts</a>
-                    <a href="my_profile.php" class="text-gray-700 hover:text-purple-600 px-3 py-2">My Profile</a>
-                    <a href="logout.php" class="bg-purple-600 text-white px-6 py-2 rounded-lg">Log Out</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+<body class="bg-gray-200">
+    
     <!-- Post Details Section -->
     <div class="max-w-5xl mx-auto py-12 px-4">
         <div class="bg-white p-8 rounded-lg shadow-md">
@@ -135,8 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                 <p><strong>Post Type:</strong> <?= htmlspecialchars($post['post_type']) ?></p>
                 <p><strong>Category:</strong> <?= htmlspecialchars($post['category_name']) ?></p>
                 <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($post['item_description'])) ?></p>
-                <p><strong>Contact Info:</strong> <?= htmlspecialchars($post['contact_info']) ?></p>
                 <p><strong>Location:</strong> <?= htmlspecialchars($post['location_reported']) ?></p>
+                <p><strong>Contact Info:</strong> <?= htmlspecialchars($post['contact_info']) ?></p>
                 <p><strong>Status:</strong> <?= htmlspecialchars($post['item_status']) ?></p>
             </div>
 

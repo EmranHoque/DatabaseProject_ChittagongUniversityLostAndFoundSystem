@@ -1,5 +1,13 @@
 <?php
 require 'includes/db.php';
+session_start(); // Ensure session is started
+include 'templates/header.php';
+
+// If the user is not logged in, redirect to the login page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
 
 // Fetch posts with filters
 $sql = "SELECT p.*, c.category_name, u.name AS user_name 
@@ -48,24 +56,7 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css"> 
 </head>
-<body class="bg-gray-50 hero-pattern">
-    <!-- Navigation -->
-    <nav class="bg-white custom-shadow">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <span class="text-purple-600 text-xl font-bold gradient-text">Chittagong University Lost & Found</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="index.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Home</a>
-                    <a href="create_post.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Create Post</a>
-                    <a href="my_profile.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">My Profile</a>
-                    <a href="logout.php" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">Log Out</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+<body class="bg-gray-200 hero-pattern">
     <!-- Filters Section -->
     <section class="py-8">
         <div class="max-w-7xl mx-auto px-4">

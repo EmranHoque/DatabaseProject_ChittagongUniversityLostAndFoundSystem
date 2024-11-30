@@ -1,5 +1,6 @@
 <?php
 require 'includes/db.php';
+include 'templates/header.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = trim($_POST['name']);
@@ -55,21 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white custom-shadow">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <span class="text-purple-600 text-xl font-bold gradient-text">Chittagong University Lost & Found</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="index.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Home</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+<body class="bg-gray-200">
     <!-- Sign-Up Section -->
     <div class="max-w-md mx-auto py-12 px-4">
         <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">Create an Account</h1>

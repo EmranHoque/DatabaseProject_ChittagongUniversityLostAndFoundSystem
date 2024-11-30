@@ -1,9 +1,10 @@
 <?php 
 session_start(); 
-
+include 'templates/header.php';
 
 $loggedIn = isset($_SESSION['user_id']) ? true : false;
 ?>
+
 
 
 <!DOCTYPE html>
@@ -16,30 +17,7 @@ $loggedIn = isset($_SESSION['user_id']) ? true : false;
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white custom-shadow">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <span class="text-purple-600 text-xl font-bold gradient-text">Chittagong University Lost & Found</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="index.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Home</a>
-                    <?php if ($loggedIn): ?>
-                        <!-- <a href="create_post.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Create Post</a> -->
-                        <!-- <a href="posts.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">Browse Posts</a> -->
-                        <!-- <a href="my_posts.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">My Posts</a> -->
-                        <a href="my_profile.php" class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300">My Profile</a>
-                        <a href="logout.php" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-80 transition duration-300">Log Out</a>
-                    <?php else: ?>
-                        <!-- <a href="login.php" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-80 transition duration-300">Login</a> -->
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+<body class="bg-gray-200">
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
         <div class="absolute inset-0 hero-pattern"></div>
@@ -77,7 +55,7 @@ $loggedIn = isset($_SESSION['user_id']) ? true : false;
     </div>
 
     <!-- How It Works Section -->
-    <section class="py-12 bg-gray-50">
+    <section class="py-12 bg-gray-150">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <h2 class="text-3xl font-extrabold text-gray-900 mb-8">How It Works</h2>
             <p class="text-lg text-gray-600 mb-4">Easily report and find lost items through our simple and secure platform. Here's how:</p>
