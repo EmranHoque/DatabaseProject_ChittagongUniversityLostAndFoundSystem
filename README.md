@@ -33,12 +33,3 @@ The **Chittagong University Lost and Found System** is a web-based platform desi
 4. **Run the project:**
 - Navigate to `index.php` in your browser to start using the system.
 
-## Contributing
-- **Fork** the repo.
-- **Clone** your fork.
-- **Create** a branch for your changes.
-- **Push** the changes to your branch.
-- **Open** a pull request.
-
-## License
-This project is open source and available under the [MIT License](LICENSE).

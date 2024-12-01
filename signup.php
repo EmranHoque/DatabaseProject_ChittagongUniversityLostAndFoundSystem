@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $phone = trim($_POST['phone']);
     $password = $_POST['password'];
 
-    // Server-side validation
+    // Email and phone number validation
     if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
         $error = "Name can only contain letters and spaces.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -22,10 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               !preg_match('/[\W_]/', $password)) {
         $error = "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.";
     } else {
-        // If validation passes, hash the password
+        
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        // Prepare the SQL statement
+        
         $sql = "INSERT INTO user (name, email, phone_number, password) VALUES (:name, :email, :phone, :password)";
         $stmt = $pdo->prepare($sql);
 
@@ -39,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: login.php');
             exit;
         } catch (PDOException $e) {
-            // Log the error to a file
             error_log($e->getMessage(), 3, 'errors.log');
             $error = "An error occurred while processing your request. Please try again later.";
         }

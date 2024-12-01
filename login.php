@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // Email sanitization
+    // Email validation
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email format.";
     } else {
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password'])) {
-                // Secure the session
+                
                 session_regenerate_id(true);
 
                 $_SESSION['user_id'] = $user['user_id'];
@@ -32,7 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $error = "Invalid email or password.";
             }
         } catch (PDOException $e) {
-            // Log the database error
             error_log($e->getMessage(), 3, 'errors.log');
             $error = "An error occurred. Please try again later.";
         }
@@ -56,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="max-w-md mx-auto py-12 px-4">
         <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">Login to your Account</h1>
         <form action="login.php" method="POST" class="bg-white p-8 rounded-lg shadow-md">
-            <!-- Error Message -->
+            
             <?php if (isset($error)): ?>
                 <div class="mb-4 text-red-500 text-sm">
                     <?= htmlspecialchars($error) ?>

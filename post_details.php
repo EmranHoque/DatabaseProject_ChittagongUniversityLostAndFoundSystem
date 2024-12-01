@@ -41,13 +41,10 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute(['post_id' => $post_id]);
 $comments = $stmt->fetchAll();
 
-// ... (rest of your code remains unchanged)
-?>
 
 
 $editing_comment_id = null;
 
-// Handle edit comment request
 if (isset($_POST['edit_comment_request']) && isset($_POST['comment_id'])) {
     $editing_comment_id = $_POST['comment_id'];
 }

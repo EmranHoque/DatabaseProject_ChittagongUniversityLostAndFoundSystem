@@ -1,9 +1,9 @@
 <?php
 require 'includes/db.php';
-session_start(); // Ensure session is started
+session_start(); 
 include 'templates/header.php';
 
-// If the user is not logged in, redirect to the login page
+// check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
