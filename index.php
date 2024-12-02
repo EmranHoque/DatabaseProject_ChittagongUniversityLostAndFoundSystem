@@ -63,6 +63,31 @@ $stats = $stmt->fetch();
         </div>
     </div>
 
+    <!-- Analytics Section -->
+    <section class="py-12 bg-gray">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-8">System Analytics</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
+                <div class="bg-blue-200 p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold">Total Lost Items</h3>
+                    <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
+                </div>
+                <div class="bg-green-200 p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold">Total Found Items</h3>
+                    <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
+                </div>
+                <div class="bg-purple-200 p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold">Resolved Posts</h3>
+                    <p class="text-3xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
+                </div>
+                <div class="bg-red-200 p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold">Unresolved Posts</h3>
+                    <p class="text-3xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- How It Works Section -->
     <section class="py-12 bg-gray-150">
         <div class="max-w-7xl mx-auto px-4 text-center">
@@ -80,31 +105,6 @@ $stats = $stmt->fetch();
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-xl font-bold text-purple-600">3. Connect and Reclaim</h3>
                     <p class="mt-2 text-gray-600">Once you find a match, you can contact the person who found your item and arrange to get it back.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Analytics Section -->
-    <section class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-8">System Analytics</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
-                <div class="bg-blue-100 p-6 rounded-lg shadow-md">
-                    <h3 class="text-lg font-semibold">Total Lost Items</h3>
-                    <p class="text-2xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
-                </div>
-                <div class="bg-green-100 p-6 rounded-lg shadow-md">
-                    <h3 class="text-lg font-semibold">Total Found Items</h3>
-                    <p class="text-2xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
-                </div>
-                <div class="bg-purple-100 p-6 rounded-lg shadow-md">
-                    <h3 class="text-lg font-semibold">Resolved Posts</h3>
-                    <p class="text-2xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
-                </div>
-                <div class="bg-red-100 p-6 rounded-lg shadow-md">
-                    <h3 class="text-lg font-semibold">Unresolved Posts</h3>
-                    <p class="text-2xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
                 </div>
             </div>
         </div>

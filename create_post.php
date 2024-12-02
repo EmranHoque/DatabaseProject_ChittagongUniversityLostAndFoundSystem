@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
     $location = $_POST['location'];
@@ -19,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $item_status = 'Pending';
     $category_id = $_POST['category_id'];
     $user_id = $_SESSION['user_id'];
-
     
     $sql = "INSERT INTO post (title, location_reported, date_reported, item_description, post_type, item_status, category_id, user_id)
             VALUES (:title, :location, :date_reported, :item_description, :post_type, :item_status, :category_id, :user_id)";
@@ -112,8 +110,6 @@ $categories = $pdo->query($sql)->fetchAll();
             </div>
         </form>
     </div>
-
-    
 </body>
 </html>
 
