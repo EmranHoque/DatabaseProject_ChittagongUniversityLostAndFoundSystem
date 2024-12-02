@@ -65,7 +65,7 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
             <form method="GET" class="mt-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
                 <div class="flex space-x-4">
                     <!-- Category Dropdown -->
-                    <select name="category" class="form-select bg-gray-50 border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <select name="category" class="form-select bg-gray-50 border border-gray-400 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <option value="">All Categories</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= htmlspecialchars($category['category_name']) ?>" 
@@ -76,7 +76,7 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
                     </select>
 
                     <!-- Post Type Dropdown -->
-                    <select name="post_type" class="form-select bg-gray-50 border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <select name="post_type" class="form-select bg-gray-50 border border-gray-400 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <option value="">All Post Types</option>
                         <option value="lost" <?= isset($_GET['post_type']) && $_GET['post_type'] === 'lost' ? 'selected' : '' ?>>Lost</option>
                         <option value="found" <?= isset($_GET['post_type']) && $_GET['post_type'] === 'found' ? 'selected' : '' ?>>Found</option>

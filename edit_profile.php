@@ -2,7 +2,7 @@
 require 'includes/db.php';
 session_start();
 include 'templates/header.php'; 
-// Redirect to login if the user is not logged in
+// check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch the user's profile information
+
 $sql = "SELECT * FROM user WHERE user_id = :user_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['user_id' => $user_id]);
@@ -20,13 +20,13 @@ if (!$user) {
     die("User not found.");
 }
 
-// form submission for updating profile
+// update profile
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
-    // Update user information
+    
     $sql_update = "UPDATE user SET name = :name, email = :email, phone_number = :phone WHERE user_id = :user_id";
     $stmt_update = $pdo->prepare($sql_update);
 
