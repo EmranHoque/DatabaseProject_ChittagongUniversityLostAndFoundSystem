@@ -61,6 +61,12 @@ $categories = $pdo->query($sql)->fetchAll();
             <h1 class="text-3xl font-extrabold text-gray-900">Create a Post</h1>
         </div>
         <form action="create_post.php" method="POST" class="bg-white p-8 rounded-lg shadow-md">
+            <!-- Title -->
+            <div class="mb-6">
+                <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="title" name="title" required placeholder="Enter a brief title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+            </div>
+
             <!-- Post Type -->
             <div class="mb-6">
                 <label for="post_type" class="block text-sm font-medium text-gray-700">Post Type</label>
@@ -70,26 +76,8 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-            <!-- Title -->
-            <div class="mb-6">
-                <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="title" name="title" required placeholder="Enter a brief title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
-            </div>
-
-            <!-- Location -->
-            <div class="mb-6">
-                <label for="location" class="block text-sm font-medium text-gray-700">Location Reported</label>
-                <input type="text" id="location" name="location" required placeholder="Enter the location" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
-            </div>
-
-            <!-- Description -->
-            <div class="mb-6">
-                <label for="item_description" class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea id="item_description" name="item_description" rows="4" required placeholder="Provide details about the item" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></textarea>
-            </div>
-
-            <!-- Category -->
-            <div class="mb-6">
+                        <!-- Category -->
+                        <div class="mb-6">
                 <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
                 <select id="category_id" name="category_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
                     <?php foreach ($categories as $category): ?>
@@ -102,6 +90,54 @@ $categories = $pdo->query($sql)->fetchAll();
             <div class="mb-6">
                 <label for="date_reported" class="block text-sm font-medium text-gray-700">Date of Incident</label>
                 <input type="date" id="date_reported" name="date_reported" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+            </div>
+            
+            <!-- Location -->
+            <div class="mb-6">
+                <label for="location" class="block text-sm font-medium text-gray-700">Location Reported</label>
+                <select id="location" name="location" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+                    <option value="" disabled selected>Select a location</option>
+                    <option value="1 No. Gate Area">1 No. Gate Area</option>
+                    <option value="2 No. Gate Area">2 No. Gate Area</option>
+                    <option value="Zero Point">Zero Point</option>
+                    <option value="Shaheed Minar">Shaheed Minar</option>
+                    <option value="Central Library">Central Library</option>
+                    <option value="Gymnasium">Gymnasium</option>
+                    <option value="Botanical Garden">Botanical Garden</option>
+                    <option value="Chittagong University Medical Center">Chittagong University Medical Center</option>
+                    <option value="Jamal Nazrul Islam Research Centre">Jamal Nazrul Islam Research Centre</option>
+                    <option value="Institute of Forestry and Environmental Sciences">Institute of Forestry and Environmental Sciences</option>
+                    <option value="Faculty of Engineering">Faculty of Engineering</option>
+                    <option value="Faculty of Science">Faculty of Science</option>
+                    <option value="Faculty of Biological Science">Faculty of Biological Science</option>
+                    <option value="Institute of Marine Science">Institute of Marine Science</option>
+                    <option value="Faculty of Social Sciences">Faculty of Social Sciences</option>
+                    <option value="Faculty of Business Administration">Faculty of Business Administration</option>
+                    <option value="Faculty of Law">Faculty of Law</option>
+                    <option value="Alaol Hall">Alaol Hall</option>
+                    <option value="A. F. Rahman Hall">A. F. Rahman Hall</option>
+                    <option value="Shahjalal Hall">Shahjalal Hall</option>
+                    <option value="Suhrawardy Hall">Suhrawardy Hall</option>
+                    <option value="Shah Amanat Hall">Shah Amanat Hall</option>
+                    <option value="Shamsun Nahar Hall">Shamsun Nahar Hall</option>
+                    <option value="Shaheed Abdur Rab Hall">Shaheed Abdur Rab Hall</option>
+                    <option value="Pritilata Hall">Pritilata Hall</option>
+                    <option value="Deshnetri Begum Khaleda Zia Hall">Deshnetri Begum Khaleda Zia Hall</option>
+                    <option value="Masterda Suriya Sen Hall">Masterda Suriya Sen Hall</option>
+                    <option value="Bangabandhu Sheikh Mujibur Rahman Hall">Bangabandhu Sheikh Mujibur Rahman Hall</option>
+                    <option value="Janonetri Sheikh Hasina Hall">Janonetri Sheikh Hasina Hall</option>
+                    <option value="Bangamata Sheikh Fazilatunnesa Mujib Hall">Bangamata Sheikh Fazilatunnesa Mujib Hall</option>
+                    <option value="Artist Rashid Chowdhury Hostel">Artist Rashid Chowdhury Hostel</option>
+                    <option value="Atish Dipangkar Srigyan Hall">Atish Dipangkar Srigyan Hall</option>
+                    <option value="Chittagong University School & College">Chittagong University School & College</option>
+                </select>
+            </div>
+
+
+            <!-- Description -->
+            <div class="mb-6">
+                <label for="item_description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="item_description" name="item_description" rows="4" required placeholder="Provide details about the item" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></textarea>
             </div>
 
             <!-- Submit Button -->

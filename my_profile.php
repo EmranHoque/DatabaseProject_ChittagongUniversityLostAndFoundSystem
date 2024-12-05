@@ -95,7 +95,7 @@ $posts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- My Posts Section -->
-        <div class="bg-white p-8 rounded-lg shadow-md">
+        <div class="bg-gray p-8">
             <h2 class="text-3xl font-semibold text-gray-900">My Posts</h2>
             <?php if (count($posts) > 0): ?>
                 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
