@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-
+// Fetch user details
 $sql_user = "SELECT * FROM user WHERE user_id = :user_id";
 $stmt_user = $pdo->prepare($sql_user);
 $stmt_user->execute(['user_id' => $user_id]);
@@ -20,15 +20,28 @@ if (!$user) {
     die("User not found.");
 }
 
+// Fetch statistics for user posts
+$statsSql = "
+    SELECT 
+        SUM(CASE WHEN post_type = 'Lost' THEN 1 ELSE 0 END) AS total_lost,
+        SUM(CASE WHEN post_type = 'Found' THEN 1 ELSE 0 END) AS total_found,
+        SUM(CASE WHEN item_status = 'Resolved' THEN 1 ELSE 0 END) AS resolved,
+        SUM(CASE WHEN item_status = 'Pending' THEN 1 ELSE 0 END) AS unresolved
+    FROM post
+    WHERE user_id = :user_id";
+$stmtStats = $pdo->prepare($statsSql);
+$stmtStats->execute(['user_id' => $user_id]);
+$stats = $stmtStats->fetch(PDO::FETCH_ASSOC);
 
-$sql_posts = "SELECT p.*, c.category_name 
-              FROM post p
-              JOIN category c ON p.category_id = c.category_id
-              WHERE p.user_id = :user_id
-              ORDER BY p.created_at DESC";
+// Fetch user posts
+$sql_posts = "
+    SELECT post.*, category.category_name 
+    FROM post 
+    JOIN category ON post.category_id = category.category_id 
+    WHERE post.user_id = :user_id";
 $stmt_posts = $pdo->prepare($sql_posts);
 $stmt_posts->execute(['user_id' => $user_id]);
-$posts = $stmt_posts->fetchAll();
+$posts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -41,18 +54,43 @@ $posts = $stmt_posts->fetchAll();
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-200">
-    <!-- My Profile Section -->
     <div class="max-w-7xl mx-auto py-12 px-4 space-y-12">
-        <!-- Profile Section -->
-        <div class="bg-white p-8 rounded-lg shadow-md">
-            <h1 class="text-3xl font-extrabold text-gray-900 mb-6">My Profile</h1>
-            <div class="space-y-4">
-                <p><strong>Name:</strong> <?= htmlspecialchars($user['name']) ?></p>
-                <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
-                <p><strong>Phone Number:</strong> <?= htmlspecialchars($user['phone_number']) ?></p>
+        <!-- Profile and Analytics Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Profile Section -->
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-6">My Profile</h1>
+                <div class="space-y-4">
+                    <p><strong>Name:</strong> <?= htmlspecialchars($user['name']) ?></p>
+                    <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
+                    <p><strong>Phone Number:</strong> <?= htmlspecialchars($user['phone_number']) ?></p>
+                </div>
+                <div class="mt-20 flex justify-end">
+                    <a href="edit_profile.php" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-lg hover:opacity-90 transition duration-300">Edit Profile</a>
+                </div>
             </div>
-            <div class="mt-6 flex justify-end">
-                <a href="edit_profile.php" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">Edit Profile</a>
+
+            <!-- Analytics Section -->
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-3xl font-semibold text-gray-900 mb-6">Analytics Board</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-yellow-200 p-6 rounded-lg shadow-md text-center">
+                        <h3 class="text-lg font-semibold">Total Lost</h3>
+                        <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
+                    </div>
+                    <div class="bg-blue-200 p-6 rounded-lg shadow-md text-center">
+                        <h3 class="text-lg font-semibold">Total Found</h3>
+                        <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
+                    </div>
+                    <div class="bg-green-200 p-6 rounded-lg shadow-md text-center">
+                        <h3 class="text-lg font-semibold">Resolved</h3>
+                        <p class="text-3xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
+                    </div>
+                    <div class="bg-red-200 p-6 rounded-lg shadow-md text-center">
+                        <h3 class="text-lg font-semibold">Pending</h3>
+                        <p class="text-3xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -100,8 +138,6 @@ $posts = $stmt_posts->fetchAll();
             <?php endif; ?>
         </div>
     </div>
-
-    
 </body>
 </html>
 

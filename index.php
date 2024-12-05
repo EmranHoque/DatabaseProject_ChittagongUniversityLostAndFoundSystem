@@ -64,7 +64,7 @@ $stats = $stmt->fetch();
     </div>
 
     <!-- Analytics Section -->
-<section class="py-12 bg-gray-50">
+<section class="py-12 bg-gray">
     <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">System Analytics</h2>
 
@@ -73,19 +73,19 @@ $stats = $stmt->fetch();
             <!-- 4x4 Grids for Post Stats -->
             <div class="grid grid-cols-2 gap-4">
                 <div class="bg-yellow-200 p-6 rounded-lg shadow-md text-center">
-                    <h3 class="text-lg font-semibold">Total Lost Items</h3>
+                    <h3 class="text-lg font-semibold">Total Lost</h3>
                     <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
                 </div>
                 <div class="bg-blue-200 p-6 rounded-lg shadow-md text-center">
-                    <h3 class="text-lg font-semibold">Total Found Items</h3>
+                    <h3 class="text-lg font-semibold">Total Found</h3>
                     <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
                 </div>
-                <div class="bg-green-200 p-6 rounded-lg shadow-md text-center">
-                    <h3 class="text-lg font-semibold">Resolved Posts</h3>
+                <div class="bg-green-300 p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold">Resolved</h3>
                     <p class="text-3xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
                 </div>
-                <div class="bg-red-200 p-6 rounded-lg shadow-md text-center">
-                    <h3 class="text-lg font-semibold">Unresolved Posts</h3>
+                <div class="bg-red-300 p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold">Pending</h3>
                     <p class="text-3xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
                 </div>
             </div>
@@ -134,7 +134,7 @@ $stats = $stmt->fetch();
     const pieChart = new Chart(pieCtx, {
         type: 'pie',
         data: {
-            labels: ['Resolved', 'Unresolved'],
+            labels: ['Resolved', 'Pending'],
             datasets: [{
                 data: [<?= htmlspecialchars($stats['resolved']) ?>, <?= htmlspecialchars($stats['unresolved']) ?>],
                 backgroundColor: ['#34D399', '#F87171'], // Resolved: Green, Unresolved: Red
@@ -167,7 +167,7 @@ $stats = $stmt->fetch();
         datasets: [{
             label: 'Number of Posts',
             data: [<?= implode(',', $postCounts) ?>],
-            backgroundColor: '#60A5FA',
+            backgroundColor: '#F44336',
             borderWidth: 1
         }]
     };
