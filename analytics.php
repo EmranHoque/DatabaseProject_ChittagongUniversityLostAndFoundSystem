@@ -84,37 +84,43 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         }
     </style>
 </head>
-<body class="antialiased bg-gray-50">
-    <div class="container mx-auto px-6 py-12 max-w-screen-xl">
+<body class="bg-gray-200">
+    
+
+    <div class="container mx-auto px-6 py-12 max-w-screen-xl ">
         <!-- Existing content -->
         <header class="text-center mb-16">
-            <h1 class="text-5xl font-light text-gray-900 mb-4">Lost & Found Analytics</h1>
-            <p class="text-xl text-gray-500 font-light max-w-2xl mx-auto">
+            <h1 class="text-5xl font-light text-gray-900 font-semibold mb-4">Lost & Found Analytics</h1>
+            <p class="text-xl text-gray-600 font-light max-w-2xl mx-auto">
                 Comprehensive insights into item tracking, resolution status, and reporting trends
             </p>
+            <br>
+            <a href="generate_pdf.php" class="bg-blue-500 text-white px-6 py-2 rounded">
+                Download PDF
+            </a>
         </header>
 
         <!-- Quick Stats and Pie Chart Section -->
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
+        <div class="grid md:grid-cols-2 gap-8 mb-12 bg-white">
             <!-- Stats Grid -->
             <div class="elegant-card">
                 <div class="card-header">
-                    <h2 class="section-title">Quick Overview</h2>
+                    <h2 class="section-title text-center font-semibold py-6">Quick Overview</h2>
                 </div>
                 <div class="p-8 grid grid-cols-2 gap-6">
-                    <div class="text-center bg-yellow-50 p-4 rounded-xl">
+                    <div class="text-center bg-yellow-100 p-4 rounded-xl">
                         <div class="text-sm uppercase tracking-wide text-yellow-600 mb-2">Lost Items</div>
                         <div class="text-4xl font-light text-yellow-800"><?= htmlspecialchars($stats['total_lost']) ?></div>
                     </div>
-                    <div class="text-center bg-blue-50 p-4 rounded-xl">
+                    <div class="text-center bg-blue-100 p-4 rounded-xl">
                         <div class="text-sm uppercase tracking-wide text-blue-600 mb-2">Found Items</div>
                         <div class="text-4xl font-light text-blue-800"><?= htmlspecialchars($stats['total_found']) ?></div>
                     </div>
-                    <div class="text-center bg-green-50 p-4 rounded-xl">
+                    <div class="text-center bg-green-100 p-4 rounded-xl">
                         <div class="text-sm uppercase tracking-wide text-green-600 mb-2">Resolved</div>
                         <div class="text-4xl font-light text-green-800"><?= htmlspecialchars($stats['resolved']) ?></div>
                     </div>
-                    <div class="text-center bg-red-50 p-4 rounded-xl">
+                    <div class="text-center bg-red-100 p-4 rounded-xl">
                         <div class="text-sm uppercase tracking-wide text-red-600 mb-2">Pending</div>
                         <div class="text-4xl font-light text-red-800"><?= htmlspecialchars($stats['unresolved']) ?></div>
                     </div>
@@ -124,7 +130,7 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
             <!-- Pie Chart -->
             <div class="elegant-card">
                 <div class="card-header">
-                    <h2 class="section-title">Case Resolution Status</h2>
+                    <h2 class="section-title text-center font-semibold py-6">Case Resolution Status</h2>
                 </div>
                 <div class="p-8 flex justify-center items-center">
                     <canvas id="pieChart" width="400" height="300"></canvas>
@@ -136,9 +142,9 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         <div class="section-divider"></div>
 
         <!-- Post Trends Section -->
-        <div class="elegant-card mb-12">
+        <div class="elegant-card mb-12 bg-white">
             <div class="card-header">
-                <h2 class="section-title">Post Trends Over Time</h2>
+                <h2 class="section-title text-center font-semibold py-6">Post Trends Over Time</h2>
             </div>
             <div class="p-8">
                 <canvas id="lineChart" height="300"></canvas>
@@ -149,9 +155,9 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         <div class="section-divider"></div>
 
         <!-- Location Analysis Section -->
-        <div class="elegant-card mb-12">
+        <div class="elegant-card mb-12 bg-white">
             <div class="card-header">
-                <h2 class="section-title">Location Post Distribution</h2>
+                <h2 class="section-title text-center font-semibold py-6">Location Post Distribution</h2>
             </div>
             <div class="p-8">
                 <canvas id="barChart" height="400"></canvas>
@@ -159,9 +165,9 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- Detailed Location List -->
-        <div class="elegant-card">
+        <div class="elegant-card bg-white">
             <div class="card-header">
-                <h2 class="section-title">Detailed Location Analysis</h2>
+                <h2 class="section-title text-center font-semibold py-6">Detailed Location Analysis</h2>
             </div>
             <div class="p-8">
                 <table class="w-full text-left">
@@ -192,10 +198,10 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         <div class="section-divider"></div>
 
         <!-- NEW: Category Analysis Section -->
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
+        <div class="grid md:grid-cols-2 gap-8 mb-12 bg-white">
             <div class="elegant-card">
                 <div class="card-header">
-                    <h2 class="section-title">Category Distribution</h2>
+                    <h2 class="section-title text-center font-semibold py-6">Category Distribution</h2>
                 </div>
                 <div class="p-8 flex justify-center items-center">
                     <canvas id="categoryPieChart" width="400" height="300"></canvas>
@@ -204,7 +210,7 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="elegant-card">
                 <div class="card-header">
-                    <h2 class="section-title">Category Breakdown</h2>
+                    <h2 class="section-title text-center font-semibold py-6">Category Breakdown</h2>
                 </div>
                 <div class="p-8">
                     <table class="w-full text-left">
@@ -235,10 +241,10 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         <div class="section-divider"></div>
 
         <!-- NEW: User Activity Section -->
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
+        <div class="grid md:grid-cols-2 gap-8 mb-12 bg-white">
             <div class="elegant-card">
                 <div class="card-header">
-                    <h2 class="section-title">Top User Activity</h2>
+                    <h2 class="section-title text-center font-semibold py-6">Top User Activity</h2>
                 </div>
                 <div class="p-8">
                     <canvas id="userActivityChart" height="400"></canvas>
@@ -247,7 +253,7 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="elegant-card">
                 <div class="card-header">
-                    <h2 class="section-title">User Post Details</h2>
+                    <h2 class="section-title text-center font-semibold py-6">User Post Details</h2>
                 </div>
                 <div class="p-8">
                     <table class="w-full text-left">
