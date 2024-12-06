@@ -1,9 +1,15 @@
 <?php
-// Include database connection
+session_start(); 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+
 include 'includes/db.php';
 include 'templates/header.php';
 
-// Existing queries
+
 $statsQuery = $pdo->query("
     SELECT 
         SUM(CASE WHEN post_type = 'Lost' THEN 1 ELSE 0 END) AS total_lost,
@@ -30,7 +36,6 @@ $trendsQuery = $pdo->query("
 ");
 $trends = $trendsQuery->fetchAll(PDO::FETCH_ASSOC);
 
-// NEW: Category-based Analysis Query
 $categoryQuery = $pdo->query("
     SELECT c.category_name, 
            COUNT(*) as category_count,
@@ -43,7 +48,7 @@ $categoryQuery = $pdo->query("
 ");
 $categories = $categoryQuery->fetchAll(PDO::FETCH_ASSOC);
 
-// NEW: User Activity Analysis Query
+
 $userActivityQuery = $pdo->query("
     SELECT u.name, 
            COUNT(*) as total_posts,
@@ -85,12 +90,10 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body class="bg-gray-200">
-    
-
     <div class="container mx-auto px-6 py-12 max-w-screen-xl ">
         <!-- Existing content -->
         <header class="text-center mb-16">
-            <h1 class="text-5xl font-light text-gray-900 font-semibold mb-4">Lost & Found Analytics</h1>
+            <h1 class="text-5xl font-light text-gray-900 font-semibold mb-4">System Analytics</h1>
             <p class="text-xl text-gray-600 font-light max-w-2xl mx-auto">
                 Comprehensive insights into item tracking, resolution status, and reporting trends
             </p>
@@ -101,48 +104,38 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         </header>
 
         <!-- Quick Stats and Pie Chart Section -->
-        <div class="grid md:grid-cols-2 gap-8 mb-12 bg-white">
-            <!-- Stats Grid -->
-            <div class="elegant-card">
-                <div class="card-header">
-                    <h2 class="section-title text-center font-semibold py-6">Quick Overview</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 bg-white p-6 rounded-lg shadow-md">
+            <!-- 4x4 Grids for Post Stats -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-yellow-200 p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold">Total Lost</h3>
+                    <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
                 </div>
-                <div class="p-8 grid grid-cols-2 gap-6">
-                    <div class="text-center bg-yellow-100 p-4 rounded-xl">
-                        <div class="text-sm uppercase tracking-wide text-yellow-600 mb-2">Lost Items</div>
-                        <div class="text-4xl font-light text-yellow-800"><?= htmlspecialchars($stats['total_lost']) ?></div>
-                    </div>
-                    <div class="text-center bg-blue-100 p-4 rounded-xl">
-                        <div class="text-sm uppercase tracking-wide text-blue-600 mb-2">Found Items</div>
-                        <div class="text-4xl font-light text-blue-800"><?= htmlspecialchars($stats['total_found']) ?></div>
-                    </div>
-                    <div class="text-center bg-green-100 p-4 rounded-xl">
-                        <div class="text-sm uppercase tracking-wide text-green-600 mb-2">Resolved</div>
-                        <div class="text-4xl font-light text-green-800"><?= htmlspecialchars($stats['resolved']) ?></div>
-                    </div>
-                    <div class="text-center bg-red-100 p-4 rounded-xl">
-                        <div class="text-sm uppercase tracking-wide text-red-600 mb-2">Pending</div>
-                        <div class="text-4xl font-light text-red-800"><?= htmlspecialchars($stats['unresolved']) ?></div>
-                    </div>
+                <div class="bg-blue-200 p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold">Total Found</h3>
+                    <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
+                </div>
+                <div class="bg-green-300 p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold">Resolved</h3>
+                    <p class="text-3xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
+                </div>
+                <div class="bg-red-300 p-6 rounded-lg shadow-md text-center">
+                    <h3 class="text-lg font-semibold">Pending</h3>
+                    <p class="text-3xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
                 </div>
             </div>
 
-            <!-- Pie Chart -->
-            <div class="elegant-card">
-                <div class="card-header">
-                    <h2 class="section-title text-center font-semibold py-6">Case Resolution Status</h2>
-                </div>
-                <div class="p-8 flex justify-center items-center">
-                    <canvas id="pieChart" width="400" height="300"></canvas>
-                </div>
+            <!-- Pie Chart for Post Status -->
+            <div>
+                <canvas id="pieChart" width="300" height="300" class="mx-auto"></canvas>
             </div>
         </div>
 
         <!-- Divider -->
-        <div class="section-divider"></div>
+        <div class="section-divider my-8"></div>
 
         <!-- Post Trends Section -->
-        <div class="elegant-card mb-12 bg-white">
+        <div class="mb-12 bg-white rounded-lg shadow-md">
             <div class="card-header">
                 <h2 class="section-title text-center font-semibold py-6">Post Trends Over Time</h2>
             </div>
@@ -152,10 +145,10 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- Divider -->
-        <div class="section-divider"></div>
+        <div class="section-divider my-8"></div>
 
         <!-- Location Analysis Section -->
-        <div class="elegant-card mb-12 bg-white">
+        <div class="elegant-card mb-12 bg-white rounded-lg shadow-md">
             <div class="card-header">
                 <h2 class="section-title text-center font-semibold py-6">Location Post Distribution</h2>
             </div>
@@ -164,8 +157,11 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-        <!-- Detailed Location List -->
-        <div class="elegant-card bg-white">
+        <!-- Add extra spacing or a divider -->
+        <div class="section-divider my-8"></div>
+
+        <!-- Detailed Location List Section -->
+        <div class="elegant-card bg-white rounded-lg shadow-md">
             <div class="card-header">
                 <h2 class="section-title text-center font-semibold py-6">Detailed Location Analysis</h2>
             </div>
@@ -194,11 +190,12 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
                 </table>
             </div>
         </div>
+
         <!-- Divider -->
-        <div class="section-divider"></div>
+        <div class="section-divider my-8"></div>
 
         <!-- NEW: Category Analysis Section -->
-        <div class="grid md:grid-cols-2 gap-8 mb-12 bg-white">
+        <div class="grid md:grid-cols-2 gap-8 mb-12 bg-white rounded-lg shadow-md">
             <div class="elegant-card">
                 <div class="card-header">
                     <h2 class="section-title text-center font-semibold py-6">Category Distribution</h2>
@@ -238,10 +235,10 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <!-- Divider -->
-        <div class="section-divider"></div>
+        <div class="section-divider my-8"></div>
 
         <!-- NEW: User Activity Section -->
-        <div class="grid md:grid-cols-2 gap-8 mb-12 bg-white">
+        <div class="grid md:grid-cols-2 gap-8 mb-12 bg-white rounded-lg shadow-md">
             <div class="elegant-card">
                 <div class="card-header">
                     <h2 class="section-title text-center font-semibold py-6">Top User Activity</h2>
@@ -283,6 +280,7 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
 
     <script>
         // Pie Chart Configuration
+        // Pie Chart Configuration
         const pieCtx = document.getElementById('pieChart').getContext('2d');
         new Chart(pieCtx, {
             type: 'pie',
@@ -295,8 +293,7 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
-                aspectRatio: 1.2,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         position: 'bottom'

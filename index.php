@@ -30,7 +30,7 @@ $stats = $stmt->fetch();
     <!-- Hero Section -->
     <div class="relative overflow-hidden">
         <div class="absolute inset-0 hero-pattern"></div>
-        <div class="relative max-w-7xl mx-auto px-4 py-16">
+        <div class="relative max-w-7xl mx-auto px-4 py-12">
             <div class="text-center">
                 <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                     <span class="block">Lost Something on Campus?</span>
@@ -87,11 +87,11 @@ $stats = $stmt->fetch();
 
     <!-- Analytics Section -->
     <section class="py-12 bg-gray">
-        <div class="max-w-7xl mx-auto px-4">
+        <div class="max-w-6xl mx-auto px-12 bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">System Analytics</h2>
 
             <!-- Top Section: Grids and Pie Chart -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-gray-100 p-6 rounded-lg shadow-md">
                 <!-- 4x4 Grids for Post Stats -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-yellow-200 p-6 rounded-lg shadow-md text-center">
@@ -121,7 +121,7 @@ $stats = $stmt->fetch();
             <!-- Bottom Section: Bar Chart Only -->
             <div class="mt-12">
                 <!-- Horizontal Bar Chart -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="bg-gray-100 p-6 rounded-lg shadow-md">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Location Analysis</h3>
                     <div class="overflow-hidden">
                         <canvas id="barChart"></canvas>
@@ -157,60 +157,67 @@ $stats = $stmt->fetch();
         });
 
         // Horizontal Bar Chart: Post Distribution by Location
-        const barCtx = document.getElementById('barChart').getContext('2d');
-        const barData = {
-            labels: [<?php
-                $locationNames = [];
-                $postCounts = [];
-                $locationSql = "SELECT location_reported, COUNT(*) as post_count 
-                                FROM post 
-                                GROUP BY location_reported 
-                                ORDER BY post_count DESC";
-                $locationStmt = $pdo->query($locationSql);
-                while ($location = $locationStmt->fetch()) {
-                    $locationNames[] = '"' . $location['location_reported'] . '"';
-                    $postCounts[] = $location['post_count'];
-                }
-                echo implode(',', $locationNames);
-            ?>],
-            datasets: [{
-                label: 'Number of Posts',
-                data: [<?= implode(',', $postCounts) ?>],
-                backgroundColor: '#F44336',
-                borderWidth: 1
-            }]
-        };
-        const barChart = new Chart(barCtx, {
-            type: 'bar',
-            data: barData,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
+const barCtx = document.getElementById('barChart').getContext('2d');
+const barData = {
+    labels: [<?php
+        $locationSql = "SELECT location_reported, COUNT(*) as post_count 
+                        FROM post 
+                        GROUP BY location_reported 
+                        ORDER BY post_count DESC 
+                        LIMIT 5";
+        $locationNames = [];
+        $postCounts = [];
+        $locationStmt = $pdo->query($locationSql);
+        while ($location = $locationStmt->fetch()) {
+            $locationNames[] = '"' . $location['location_reported'] . '"';
+            $postCounts[] = $location['post_count'];
+        }
+        echo implode(',', $locationNames);
+    ?>],
+    datasets: [{
+        label: 'Number of Posts',
+        data: [<?= implode(',', $postCounts) ?>],
+        backgroundColor: '#F44336',
+        borderWidth: 1
+    }]
+};
+
+const barChart = new Chart(barCtx, {
+    type: 'bar',
+    data: barData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: false, 
+        plugins: {
+            legend: {
+                display: false
+            },
+        },
+        indexAxis: 'y', 
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Number of Posts'
                 },
-                indexAxis: 'y', // Horizontal bars
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Number of Posts'
-                        },
-                        beginAtZero: true,
-                        ticks: {
-                            maxTicksLimit: 5, // Limit the number of ticks on the x-axis for better legibility
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Locations'
-                        }
-                    }
+                beginAtZero: true,
+                ticks: {
+                    maxTicksLimit: 5,
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Locations'
                 }
             }
-        });
+        }
+    }
+});
+
+// Resize the canvas element to make the chart smaller
+document.getElementById('barChart').style.height = '300px'; // Adjust the height as needed
+
     </script>
 
 
