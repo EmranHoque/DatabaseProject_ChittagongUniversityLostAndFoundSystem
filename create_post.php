@@ -8,7 +8,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
     $location = $_POST['location'];
@@ -18,9 +17,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $item_status = 'Pending';
     $category_id = $_POST['category_id'];
     $user_id = $_SESSION['user_id'];
-    
-    $sql = "INSERT INTO post (title, location_reported, date_reported, item_description, post_type, item_status, category_id, user_id)
-            VALUES (:title, :location, :date_reported, :item_description, :post_type, :item_status, :category_id, :user_id)";
+
+    // Handle image upload
+    $image_path = null;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = 'uploads/'; // Directory to store uploaded images
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true); // Create directory if it doesn't exist
+        }
+
+        $file_name = basename($_FILES['image']['name']);
+        $file_tmp = $_FILES['image']['tmp_name'];
+        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (in_array($file_ext, $allowed_extensions)) {
+            $new_file_name = uniqid('img_', true) . '.' . $file_ext; // Unique file name
+            $destination = $upload_dir . $new_file_name;
+
+            if (move_uploaded_file($file_tmp, $destination)) {
+                $image_path = $destination;
+            } else {
+                $error = "Error uploading the image.";
+            }
+        } else {
+            $error = "Invalid file type. Allowed types: JPG, JPEG, PNG, GIF.";
+        }
+    }
+
+    // Insert post data into the database
+    $sql = "INSERT INTO post (title, location_reported, date_reported, item_description, post_type, item_status, category_id, user_id, image_path)
+            VALUES (:title, :location, :date_reported, :item_description, :post_type, :item_status, :category_id, :user_id, :image_path)";
     $stmt = $pdo->prepare($sql);
 
     try {
@@ -32,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'post_type' => $post_type,
             'item_status' => $item_status,
             'category_id' => $category_id,
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'image_path' => $image_path
         ]);
         header('Location: my_profile.php');
         exit;
@@ -41,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+// Fetch categories for the dropdown
 $sql = "SELECT * FROM category";
 $categories = $pdo->query($sql)->fetchAll();
 ?>
@@ -60,7 +89,7 @@ $categories = $pdo->query($sql)->fetchAll();
         <div class="flex justify-center mb-8">
             <h1 class="text-3xl font-extrabold text-gray-900">Create a Post</h1>
         </div>
-        <form action="create_post.php" method="POST" class="bg-white p-8 rounded-lg shadow-md">
+        <form action="create_post.php" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-md">
             <!-- Title -->
             <div class="mb-6">
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
@@ -76,8 +105,8 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-                        <!-- Category -->
-                        <div class="mb-6">
+            <!-- Category -->
+            <div class="mb-6">
                 <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
                 <select id="category_id" name="category_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
                     <?php foreach ($categories as $category): ?>
@@ -133,11 +162,16 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-
             <!-- Description -->
             <div class="mb-6">
                 <label for="item_description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea id="item_description" name="item_description" rows="4" required placeholder="Provide details about the item" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></textarea>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-6">
+                <label for="image" class="block text-sm font-medium text-gray-700">Upload Image</label>
+                <input type="file" id="image" name="image" accept="image/*" class="mt-1 block w-full text-gray-600 sm:text-sm">
             </div>
 
             <!-- Submit Button -->
@@ -149,6 +183,10 @@ $categories = $pdo->query($sql)->fetchAll();
 </body>
 </html>
 
-
-
 <?php include 'templates/footer.php'; ?>
+
+
+
+
+
+                    

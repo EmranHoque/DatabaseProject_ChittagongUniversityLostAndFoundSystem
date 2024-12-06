@@ -118,31 +118,14 @@ $stats = $stmt->fetch();
                 </div>
             </div>
 
-            <!-- Bottom Section: All Locations and Bar Chart -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
-                <!-- All Locations List -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Post Distribution by Location</h3>
-                    <ul class="overflow-y-auto max-h-96">
-                        <?php
-                        $locationSql = "SELECT location_reported, COUNT(*) as post_count 
-                                        FROM post 
-                                        GROUP BY location_reported 
-                                        ORDER BY post_count DESC";
-                        $locationStmt = $pdo->query($locationSql);
-                        while ($location = $locationStmt->fetch()): ?>
-                            <li class="flex justify-between py-2 border-b">
-                                <span class="text-gray-700"><?= htmlspecialchars($location['location_reported']) ?></span>
-                                <span class="text-gray-500"><?= htmlspecialchars($location['post_count']) ?> Posts</span>
-                            </li>
-                        <?php endwhile; ?>
-                    </ul>
-                </div>
-
+            <!-- Bottom Section: Bar Chart Only -->
+            <div class="mt-12">
                 <!-- Horizontal Bar Chart -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Location Analysis</h3>
-                    <canvas id="barChart" style="max-height: 300px;"></canvas>
+                    <div class="overflow-hidden">
+                        <canvas id="barChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -179,7 +162,11 @@ $stats = $stmt->fetch();
             labels: [<?php
                 $locationNames = [];
                 $postCounts = [];
-                $locationStmt->execute();
+                $locationSql = "SELECT location_reported, COUNT(*) as post_count 
+                                FROM post 
+                                GROUP BY location_reported 
+                                ORDER BY post_count DESC";
+                $locationStmt = $pdo->query($locationSql);
                 while ($location = $locationStmt->fetch()) {
                     $locationNames[] = '"' . $location['location_reported'] . '"';
                     $postCounts[] = $location['post_count'];
@@ -210,7 +197,10 @@ $stats = $stmt->fetch();
                             display: true,
                             text: 'Number of Posts'
                         },
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            maxTicksLimit: 5, // Limit the number of ticks on the x-axis for better legibility
+                        }
                     },
                     y: {
                         title: {
@@ -222,6 +212,9 @@ $stats = $stmt->fetch();
             }
         });
     </script>
+
+
+
 
 </body>
 </html>

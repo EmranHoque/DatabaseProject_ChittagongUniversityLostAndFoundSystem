@@ -31,6 +31,10 @@
                            class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300 <?php echo ($_SERVER['PHP_SELF'] == '/posts.php') ? 'text-purple-600 font-bold' : ''; ?>">
                             Browse Posts
                         </a>
+                        <a href="analytics.php" 
+                           class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300 <?php echo ($_SERVER['PHP_SELF'] == '/analytics.php') ? 'text-purple-600 font-bold' : ''; ?>">
+                            Analytics
+                        </a>
                         <a href="my_profile.php" 
                            class="text-gray-700 hover:text-purple-600 px-3 py-2 transition duration-300 <?php echo ($_SERVER['PHP_SELF'] == '/my_profile.php') ? 'text-purple-600 font-bold' : ''; ?>">
                             My Profile

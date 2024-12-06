@@ -27,6 +27,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute(['post_id' => $post_id]);
 $post = $stmt->fetch();
 
+
 if (!$post) {
     die("Post not found.");
 }
@@ -119,20 +120,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
 <body class="bg-gray-200">
     
     <!-- Post Details Section -->
-    <div class="max-w-5xl mx-auto py-12 px-4">
-        <div class="bg-white p-8 rounded-lg shadow-md">
-            <h1 class="text-3xl font-bold text-gray-900"><?= htmlspecialchars($post['title']) ?></h1>
-            <p class="text-sm text-gray-500 italic">Posted on: <?= htmlspecialchars($post['date_reported']) ?></p>
-
-            <!-- Post Details -->
-            <div class="text-gray-700 space-y-4 mt-6">
-                <p><strong>Post Type:</strong> <?= htmlspecialchars($post['post_type']) ?></p>
-                <p><strong>Category:</strong> <?= htmlspecialchars($post['category_name']) ?></p>
-                <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($post['item_description'])) ?></p>
-                <p><strong>Location:</strong> <?= htmlspecialchars($post['location_reported']) ?></p>
-                <p><strong>Contact Info:</strong> <?= htmlspecialchars($post['contact_info']) ?></p>
-                <p><strong>Status:</strong> <?= htmlspecialchars($post['item_status']) ?></p>
+    <!-- Post Details Section -->
+<div class="max-w-5xl mx-auto py-12 px-4">
+    <div class="bg-white p-8 rounded-lg shadow-md">
+        <!-- Image Section -->
+        <?php if (!empty($post['image_path'])): ?>
+            <div class="mb-6">
+                <img 
+                    src="<?= htmlspecialchars($post['image_path']) ?>" 
+                    alt="Post Image" 
+                    class="w-full h-auto max-h-96 object-contain rounded-lg">
             </div>
+        <?php endif; ?>
+
+        <h1 class="text-3xl font-bold text-gray-900"><?= htmlspecialchars($post['title']) ?></h1>
+        <p class="text-sm text-gray-500 italic">Posted on: <?= htmlspecialchars($post['date_reported']) ?></p>
+
+        <!-- Post Details -->
+        <div class="text-gray-700 space-y-4 mt-6">
+            <p><strong>Post Type:</strong> <?= htmlspecialchars($post['post_type']) ?></p>
+            <p><strong>Category:</strong> <?= htmlspecialchars($post['category_name']) ?></p>
+            <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($post['item_description'])) ?></p>
+            <p><strong>Location:</strong> <?= htmlspecialchars($post['location_reported']) ?></p>
+            <p><strong>Contact Info:</strong> <?= htmlspecialchars($post['contact_info']) ?></p>
+            <p><strong>Status:</strong> <?= htmlspecialchars($post['item_status']) ?></p>
+        </div>
+
 
 <!-- Post Actions -->
 <div class="mt-6 flex justify-end space-x-4">

@@ -3,7 +3,7 @@
 include 'includes/db.php';
 include 'templates/header.php';
 
-// Existing queries
+// Fetch general stats
 $statsQuery = $pdo->query("
     SELECT 
         SUM(CASE WHEN post_type = 'Lost' THEN 1 ELSE 0 END) AS total_lost,
@@ -14,6 +14,7 @@ $statsQuery = $pdo->query("
 ");
 $stats = $statsQuery->fetch(PDO::FETCH_ASSOC);
 
+// Fetch all locations and their post counts
 $locationQuery = $pdo->query("
     SELECT location_reported, COUNT(*) as post_count
     FROM post
@@ -22,6 +23,7 @@ $locationQuery = $pdo->query("
 ");
 $locations = $locationQuery->fetchAll(PDO::FETCH_ASSOC);
 
+// Fetch post trends
 $trendsQuery = $pdo->query("
     SELECT DATE(date_reported) as report_date, COUNT(*) as post_count
     FROM post
@@ -29,39 +31,12 @@ $trendsQuery = $pdo->query("
     ORDER BY report_date ASC
 ");
 $trends = $trendsQuery->fetchAll(PDO::FETCH_ASSOC);
-
-// NEW: Category-based Analysis Query
-$categoryQuery = $pdo->query("
-    SELECT c.category_name, 
-           COUNT(*) as category_count,
-           SUM(CASE WHEN p.post_type = 'Lost' THEN 1 ELSE 0 END) AS lost_count,
-           SUM(CASE WHEN p.post_type = 'Found' THEN 1 ELSE 0 END) AS found_count
-    FROM post p
-    JOIN category c ON p.category_id = c.category_id
-    GROUP BY c.category_name
-    ORDER BY category_count DESC
-");
-$categories = $categoryQuery->fetchAll(PDO::FETCH_ASSOC);
-
-// NEW: User Activity Analysis Query
-$userActivityQuery = $pdo->query("
-    SELECT u.name, 
-           COUNT(*) as total_posts,
-           SUM(CASE WHEN p.post_type = 'Lost' THEN 1 ELSE 0 END) AS lost_posts,
-           SUM(CASE WHEN p.post_type = 'Found' THEN 1 ELSE 0 END) AS found_posts
-    FROM post p
-    JOIN user u ON p.user_id = u.user_id
-    GROUP BY u.user_id, u.name
-    ORDER BY total_posts DESC
-    LIMIT 10
-");
-$userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lost & Found Analytics Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -86,7 +61,6 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body class="antialiased bg-gray-50">
     <div class="container mx-auto px-6 py-12 max-w-screen-xl">
-        <!-- Existing content -->
         <header class="text-center mb-16">
             <h1 class="text-5xl font-light text-gray-900 mb-4">Lost & Found Analytics</h1>
             <p class="text-xl text-gray-500 font-light max-w-2xl mx-auto">
@@ -186,91 +160,6 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            </div>
-        </div>
-        <!-- Divider -->
-        <div class="section-divider"></div>
-
-        <!-- NEW: Category Analysis Section -->
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
-            <div class="elegant-card">
-                <div class="card-header">
-                    <h2 class="section-title">Category Distribution</h2>
-                </div>
-                <div class="p-8 flex justify-center items-center">
-                    <canvas id="categoryPieChart" width="400" height="300"></canvas>
-                </div>
-            </div>
-
-            <div class="elegant-card">
-                <div class="card-header">
-                    <h2 class="section-title">Category Breakdown</h2>
-                </div>
-                <div class="p-8">
-                    <table class="w-full text-left">
-                        <thead class="border-b">
-                            <tr>
-                                <th class="pb-3 text-gray-600">Category</th>
-                                <th class="pb-3 text-gray-600 text-right">Total Posts</th>
-                                <th class="pb-3 text-gray-600 text-right">Lost</th>
-                                <th class="pb-3 text-gray-600 text-right">Found</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($categories as $category): ?>
-                                <tr class="border-b hover:bg-gray-50 transition-colors">
-                                    <td class="py-3"><?= htmlspecialchars($category['category_name']) ?></td>
-                                    <td class="py-3 text-right"><?= $category['category_count'] ?></td>
-                                    <td class="py-3 text-right"><?= $category['lost_count'] ?></td>
-                                    <td class="py-3 text-right"><?= $category['found_count'] ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Divider -->
-        <div class="section-divider"></div>
-
-        <!-- NEW: User Activity Section -->
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
-            <div class="elegant-card">
-                <div class="card-header">
-                    <h2 class="section-title">Top User Activity</h2>
-                </div>
-                <div class="p-8">
-                    <canvas id="userActivityChart" height="400"></canvas>
-                </div>
-            </div>
-
-            <div class="elegant-card">
-                <div class="card-header">
-                    <h2 class="section-title">User Post Details</h2>
-                </div>
-                <div class="p-8">
-                    <table class="w-full text-left">
-                        <thead class="border-b">
-                            <tr>
-                                <th class="pb-3 text-gray-600">User</th>
-                                <th class="pb-3 text-gray-600 text-right">Total Posts</th>
-                                <th class="pb-3 text-gray-600 text-right">Lost Posts</th>
-                                <th class="pb-3 text-gray-600 text-right">Found Posts</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($userActivity as $user): ?>
-                                <tr class="border-b hover:bg-gray-50 transition-colors">
-                                    <td class="py-3"><?= htmlspecialchars($user['name']) ?></td>
-                                    <td class="py-3 text-right"><?= $user['total_posts'] ?></td>
-                                    <td class="py-3 text-right"><?= $user['lost_posts'] ?></td>
-                                    <td class="py-3 text-right"><?= $user['found_posts'] ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>
@@ -383,61 +272,7 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
                 }
             }
         });
-        // Category Pie Chart
-        const categoryPieCtx = document.getElementById('categoryPieChart').getContext('2d');
-        new Chart(categoryPieCtx, {
-            type: 'pie',
-            data: {
-                labels: <?= json_encode(array_column($categories, 'category_name')) ?>,
-                datasets: [{
-                    data: <?= json_encode(array_column($categories, 'category_count')) ?>,
-                    backgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                        '#9966FF', '#FF9F40', '#E7E9ED', '#FF6384'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'bottom' },
-                    title: { display: true, text: 'Posts by Category' }
-                }
-            }
-        });
-
-        // User Activity Bar Chart
-        const userActivityCtx = document.getElementById('userActivityChart').getContext('2d');
-        new Chart(userActivityCtx, {
-            type: 'bar',
-            data: {
-                labels: <?= json_encode(array_column($userActivity, 'name')) ?>,
-                datasets: [
-                    {
-                        label: 'Lost Posts',
-                        data: <?= json_encode(array_column($userActivity, 'lost_posts')) ?>,
-                        backgroundColor: '#FF6384'
-                    },
-                    {
-                        label: 'Found Posts',
-                        data: <?= json_encode(array_column($userActivity, 'found_posts')) ?>,
-                        backgroundColor: '#36A2EB'
-                    }
-                ]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: {
-                    title: { display: true, text: 'Top 10 Users by Post Activity' },
-                    legend: { position: 'bottom' }
-                },
-                scales: {
-                    x: { stacked: true, title: { display: true, text: 'Number of Posts' } },
-                    y: { stacked: true }
-                }
-            }
-        });
     </script>
 </body>
 </html>
+
