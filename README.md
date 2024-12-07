@@ -46,3 +46,52 @@ Chittagong-University-Lost-and-Found-System/
 ├── login.php             # User login
 ├── index.php             # Entry point for the application
 └── README.md             # Project documentation
+```
+
+## Setup Instructions
+1. Clone the Repository
+bash
+Copy code
+git clone https://github.com/EmranHoque/DatabaseProject-Chittagong-University-Lost-and-Found-System.git
+2. Configure the Database
+Create a new MySQL database.
+Import the SQL schema located in the /schema directory.
+Update the database connection details in db/db.php to match your setup.
+3. Set Up the Server
+Install and configure Apache, PHP, and MySQL.
+Place the project files in your web server’s root directory (e.g., htdocs for XAMPP).
+4. Run the Application
+Start your Apache and MySQL server.
+Access the application via your browser by navigating to http://localhost/index.php.
+Usage Instructions
+For Users:
+Sign Up:
+Create an account to access the platform.
+
+Log In:
+Sign in with your credentials.
+
+Post an Item:
+
+Report a lost or found item by filling out the form.
+Include a detailed description, location, category, and optional image.
+Browse Items:
+
+View all reported items.
+Filter items by category or location.
+Interact:
+
+Comment on posts to share information or inquire about items.
+Profile Management:
+
+Update your profile and manage your reported items.
+Analytics Dashboard:
+View summarized data about the system:
+A pie chart for resolved/unresolved post ratios.
+A list of the top 5 most-reported locations.
+Future Enhancements
+Add email notifications for updates on posts.
+Allow users to mark items as resolved directly from their dashboards.
+Implement a mobile-friendly design for better accessibility.
+License
+This project is licensed under the MIT License. See the LICENSE file for more details.
