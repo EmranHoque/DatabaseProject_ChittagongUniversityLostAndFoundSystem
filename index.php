@@ -122,7 +122,7 @@ $stats = $stmt->fetch();
             <div class="mt-12">
                 <!-- Horizontal Bar Chart -->
                 <div class="bg-gray-100 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Location Analysis</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Location Analysis: Top 5 locations with most reports</h3>
                     <div class="overflow-hidden">
                         <canvas id="barChart"></canvas>
                     </div>
