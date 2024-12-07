@@ -69,19 +69,19 @@ $posts = $stmt_posts->fetchAll(PDO::FETCH_ASSOC);
             <div class="bg-white p-8 rounded-lg shadow-md">
                 <h2 class="text-3xl font-semibold text-gray-900 mb-6">Analytics Board</h2>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-yellow-200 p-6 rounded-lg shadow-md text-center">
+                    <div class="bg-yellow-300 p-6 rounded-lg shadow-md text-center">
                         <h3 class="text-lg font-semibold">Total Lost</h3>
                         <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
                     </div>
-                    <div class="bg-blue-200 p-6 rounded-lg shadow-md text-center">
+                    <div class="bg-blue-300 p-6 rounded-lg shadow-md text-center">
                         <h3 class="text-lg font-semibold">Total Found</h3>
                         <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
                     </div>
-                    <div class="bg-green-200 p-6 rounded-lg shadow-md text-center">
+                    <div class="bg-green-300 p-6 rounded-lg shadow-md text-center">
                         <h3 class="text-lg font-semibold">Resolved</h3>
                         <p class="text-3xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
                     </div>
-                    <div class="bg-red-200 p-6 rounded-lg shadow-md text-center">
+                    <div class="bg-red-300 p-6 rounded-lg shadow-md text-center">
                         <h3 class="text-lg font-semibold">Pending</h3>
                         <p class="text-3xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
                     </div>
