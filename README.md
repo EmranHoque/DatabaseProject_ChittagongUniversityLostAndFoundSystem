@@ -36,4 +36,30 @@ The **Chittagong University Lost and Found System** is a web-based application d
   - Start your Apache and MySQL server.
   - Access the application via your browser by navigating to http://localhost/index.php.
 
+##  Usage Instructions
+  - **Sign Up**: 
+    - Create an account to access the platform. 
+  - **Log In**: 
+    - Sign in with your credentials.
+  - **Post an Item**: 
+    - Report a lost or found item by filling out the form. 
+    - Include a detailed description, location, category, and optional image.
+  - **Browse Items:**: 
+    - View all reported items.
+    - Filter items by category or location.
+  - **Interact:**: 
+    - Comment on posts to share information or inquire about items.
+  - **Profile Management:**: 
+    - Update your profile and manage your reported items.
+  - **Analytics Dashboard:**: 
+    - A pie chart for resolved/unresolved post ratios.
+    - A line chart for post trends over time.
+    - A bar chart for location distribution.
+    - A list of all reported locations with percentage.
+    - A pie chart for category distribution alongside a list of category breakdown.
+    - A pie chart for top user activity along with a list for user post details.
 
+## Future Enhancements
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details.
