@@ -12,7 +12,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <span class="text-purple-600 text-xl font-bold gradient-text">Chittagong University Lost & Found</span>
+                    <span class="text-purple-600 text-2xl font-bold gradient-text">Chittagong University Lost & Found</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="index.php" 

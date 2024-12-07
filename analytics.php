@@ -92,9 +92,9 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body style="bg-gray-200">
+<body class="bg-gray-200">
     <div class="container mx-auto px-6 py-12 max-w-screen-xl">
-        <header class="text-center mb-16 bg-white py-4">
+        <header class="bg-gray-200 text-center mb-16 bg-white py-4">
             <h1 class="text-6xl font-black text-gray-900 uppercase tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-700">
                 Lost & Found Analytics
             </h1>
@@ -102,7 +102,7 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
             Detailed analytics dashboard for lost and found management
             </p>
             <div class="mb-4">
-                <select id="dateRangeSelector" class="mx-auto bg-gray-200 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-purple-800 focus:border-purple-800 ">
+                <select id="dateRangeSelector" class="mx-auto bg-purple-200 border border-purple-300 rounded-md px-4 py-2 focus:outline-none focus:ring-purple-800 focus:border-purple-800 mt-8 text-xl">
                     <option value="all" <?= $dateRange == 'all' ? 'selected' : '' ?>>All Time</option>
                     <option value="7days" <?= $dateRange == '7days' ? 'selected' : '' ?>>Last 7 Days</option>
                     <option value="30days" <?= $dateRange == '30days' ? 'selected' : '' ?>>Last 30 Days</option>
@@ -123,19 +123,19 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         <!-- Resolved vs. Pending Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 bg-gray-100 p-6 rounded-lg shadow-md">
             <div class="grid grid-cols-2 gap-4">
-                <div class="bg-yellow-300 p-6 rounded-lg shadow-md text-center">
+                <div class="bg-yellow-300 p-4 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
                     <h3 class="text-xl font-semibold">Total Lost</h3>
                     <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
                 </div>
-                <div class="bg-blue-300 p-6 rounded-lg shadow-md text-center">
+                <div class="bg-blue-300 p-4 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
                     <h3 class="text-xl font-semibold">Total Found</h3>
                     <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
                 </div>
-                <div class="bg-green-300 p-6 rounded-lg shadow-md text-center">
+                <div class="bg-green-300 p-4 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
                     <h3 class="text-xl font-semibold">Resolved</h3>
                     <p class="text-3xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
                 </div>
-                <div class="bg-red-300 p-6 rounded-lg shadow-md text-center">
+                <div class="bg-red-300 p-4 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
                     <h3 class="text-xl font-semibold">Pending</h3>
                     <p class="text-3xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
                 </div>
@@ -178,7 +178,7 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         <!-- Post Trends Section -->
         <div class="mb-12 bg-gray-100 p-6 rounded-lg shadow-md">
             <div style="padding: 1.5rem; border-bottom: 1px solid #f3f4f6">
-                <h2 class="section-title text-center font-semibold py-6 text-2xl">Post Trends Over Time</h2>
+                <h2 class="section-title text-center font-semibold py-6 text-2xl flex flex-col items-center justify-center">Post Trends Over Time</h2>
             </div>
             <div class="p-8">
                 <canvas id="lineChart" height="300"></canvas>

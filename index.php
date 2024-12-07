@@ -86,33 +86,33 @@ $stats = $stmt->fetch();
     </section>
 
     <!-- Analytics Section -->
-    <section class="py-12 bg-gray">
-        <div class="max-w-6xl mx-auto px-12 bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">System Analytics</h2>
+    <section class="py-8 bg-gray">
+        <div class="max-w-5xl mx-auto px-8 bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">System Analytics</h2>
 
             <!-- Status analysis section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-gray-100 p-6 rounded-lg shadow-md">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-yellow-200 p-6 rounded-lg shadow-md text-center">
-                        <h3 class="text-lg font-semibold">Total Lost</h3>
-                        <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-gray-100 p-4 rounded-lg shadow-md">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-yellow-200 p-4 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
+                        <h3 class="text-base font-semibold">Total Lost</h3>
+                        <p class="text-2xl font-bold"><?= htmlspecialchars($stats['total_lost']) ?></p>
                     </div>
-                    <div class="bg-blue-200 p-6 rounded-lg shadow-md text-center">
-                        <h3 class="text-lg font-semibold">Total Found</h3>
-                        <p class="text-3xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
+                    <div class="bg-blue-200 p-4 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
+                        <h3 class="text-base font-semibold">Total Found</h3>
+                        <p class="text-2xl font-bold"><?= htmlspecialchars($stats['total_found']) ?></p>
                     </div>
-                    <div class="bg-green-300 p-6 rounded-lg shadow-md text-center">
-                        <h3 class="text-lg font-semibold">Resolved</h3>
-                        <p class="text-3xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
+                    <div class="bg-green-300 p-4 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
+                        <h3 class="text-base font-semibold">Resolved</h3>
+                        <p class="text-2xl font-bold"><?= htmlspecialchars($stats['resolved']) ?></p>
                     </div>
-                    <div class="bg-red-300 p-6 rounded-lg shadow-md text-center">
-                        <h3 class="text-lg font-semibold">Pending</h3>
-                        <p class="text-3xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
+                    <div class="bg-red-300 p-4 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
+                        <h3 class="text-base font-semibold">Pending</h3>
+                        <p class="text-2xl font-bold"><?= htmlspecialchars($stats['unresolved']) ?></p>
                     </div>
                 </div>
 
                 <div>
-                    <canvas id="pieChart" width="300" height="300" class="mx-auto"></canvas>
+                    <canvas id="pieChart" width="250" height="250" class="mx-auto"></canvas>
                     <script>
                         const pieCtx = document.getElementById('pieChart').getContext('2d');
                         const pieChart = new Chart(pieCtx, {
@@ -139,9 +139,9 @@ $stats = $stmt->fetch();
             </div>
 
             <!-- Location analysis section: Top 5 locations -->
-            <div class="mt-12">
-                <div class="bg-gray-100 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Location Analysis: Top 5 locations with most reports</h3>
+            <div class="mt-8">
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Location Analysis: Top 5 locations with most reports</h3>
                     <div class="overflow-hidden">
                         <canvas id="barChart"></canvas>
                         <script>
@@ -207,7 +207,12 @@ $stats = $stmt->fetch();
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="flex justify-center mt-4">
+                <a href="analytics.php" class="text-xl font-semibold bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-80 transition duration-300">
+                    See more
+                </a>
+            </div>
+        </div> 
     </section>
 
     
