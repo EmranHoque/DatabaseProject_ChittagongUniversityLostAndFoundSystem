@@ -25,6 +25,7 @@ The **Chittagong University Lost and Found System** is a web-based application d
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/EmranHoque/DatabaseProject-Chittagong-University-Lost-and-Found-System.git
+   ```
 2. **Configure the Database:**
   - Install and configure Apache, PHP, and MySQL.
   - Place the project files in your web server’s root directory (e.g., htdocs for XAMPP).
