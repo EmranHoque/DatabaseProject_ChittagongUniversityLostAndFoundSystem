@@ -15,43 +15,43 @@ The **Chittagong University Lost and Found System** is a web-based application d
 
 ## Technologies Used
 
-- **Frontend**: HTML, Tailwind CSS for modern styling, Chart.js for graphical insights and data visualization 
-- **Backend**: PHP with PDO for secure database interaction 
-- **Database**: MySQL for data storage and management 
-- **Server**: Apache (XAMPP) for local development and deployment
+- **Frontend:** HTML, Tailwind CSS for modern styling, Chart.js for graphical insights and data visualization 
+- **Backend:** PHP with PDO for secure database interaction 
+- **Database:** MySQL for data storage and management 
+- **Server:** Apache (XAMPP) for local development and deployment
 
 ## Setup Instructions
 
-1. **Clone the Repository**:
+1. **Clone the Repository:**
    ```bash
    git clone https://github.com/EmranHoque/DatabaseProject-Chittagong-University-Lost-and-Found-System.git
-2. **Configure the Database:**:
+2. **Configure the Database:**
   - Install and configure Apache, PHP, and MySQL.
   - Place the project files in your web server’s root directory (e.g., htdocs for XAMPP).
-3. **Set Up the Server:**:
+3. **Set Up the Server:**
   - Create a new MySQL database.
   - Import the SQL schema located in the /schema directory.
   - Update the database connection details in db/db.php to match your setup.
-4. **Run the Application:**:
+4. **Run the Application:**
   - Start your Apache and MySQL server.
   - Access the application via your browser by navigating to http://localhost/index.php.
 
 ##  Usage Instructions
-  - **Sign Up**: 
+  - **Sign Up:** 
     - Create an account to access the platform. 
-  - **Log In**: 
+  - **Log In:** 
     - Sign in with your credentials.
-  - **Post an Item**: 
+  - **Post an Item:**
     - Report a lost or found item by filling out the form. 
     - Include a detailed description, location, category, and optional image.
-  - **Browse Items:**: 
+  - **Browse Items:**
     - View all reported items.
     - Filter items by category or location.
-  - **Interact:**: 
+  - **Interact:**
     - Comment on posts to share information or inquire about items.
-  - **Profile Management:**: 
+  - **Profile Management:** 
     - Update your profile and manage your reported items.
-  - **Analytics Dashboard:**: 
+  - **Analytics Dashboard:**
     - A pie chart for resolved/unresolved post ratios.
     - A line chart for post trends over time.
     - A bar chart for location distribution.
