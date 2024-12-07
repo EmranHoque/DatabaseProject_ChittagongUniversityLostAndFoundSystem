@@ -2,7 +2,6 @@
 require 'includes/db.php';
 session_start();
 
-// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');  
     exit;
@@ -17,7 +16,6 @@ if (!isset($_GET['post_id'])) {
 
 $post_id = $_GET['post_id'];
 
-// Fetch post details
 $sql = "SELECT p.*, c.category_name, u.name AS user_name, u.phone_number AS contact_info 
         FROM post p
         JOIN category c ON p.category_id = c.category_id
@@ -118,46 +116,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
 </head>
 
 <body class="bg-gray-200">
-    
-    <!-- Post Details Section -->
-    <!-- Post Details Section -->
-<div class="max-w-5xl mx-auto py-12 px-4">
-    <div class="bg-white p-8 rounded-lg shadow-md">
-        <!-- Image Section -->
-        <?php if (!empty($post['image_path'])): ?>
-            <div class="mb-6">
-                <img 
-                    src="<?= htmlspecialchars($post['image_path']) ?>" 
-                    alt="Post Image" 
-                    class="w-full h-auto max-h-96 object-contain rounded-lg">
+    <div class="max-w-5xl mx-auto py-12 px-4">
+        <div class="bg-white p-8 rounded-lg shadow-md">
+            <!-- Image Section -->
+            <?php if (!empty($post['image_path'])): ?>
+                <div class="mb-6">
+                    <img 
+                        src="<?= htmlspecialchars($post['image_path']) ?>" 
+                        alt="Post Image" 
+                        class="w-full h-auto max-h-96 object-contain rounded-lg">
+                </div>
+            <?php endif; ?>
+
+            <h1 class="text-3xl font-bold text-gray-900"><?= htmlspecialchars($post['title']) ?></h1>
+            <p class="text-sm text-gray-500 italic">Posted on: <?= htmlspecialchars($post['date_reported']) ?></p>
+
+            <!-- Post Details -->
+            <div class="text-gray-700 space-y-4 mt-6">
+                <p><strong>Post Type:</strong> <?= htmlspecialchars($post['post_type']) ?></p>
+                <p><strong>Category:</strong> <?= htmlspecialchars($post['category_name']) ?></p>
+                <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($post['item_description'])) ?></p>
+                <p><strong>Location:</strong> <?= htmlspecialchars($post['location_reported']) ?></p>
+                <p><strong>Contact Info:</strong> <?= htmlspecialchars($post['contact_info']) ?></p>
+                <p><strong>Status:</strong> <?= htmlspecialchars($post['item_status']) ?></p>
             </div>
-        <?php endif; ?>
-
-        <h1 class="text-3xl font-bold text-gray-900"><?= htmlspecialchars($post['title']) ?></h1>
-        <p class="text-sm text-gray-500 italic">Posted on: <?= htmlspecialchars($post['date_reported']) ?></p>
-
-        <!-- Post Details -->
-        <div class="text-gray-700 space-y-4 mt-6">
-            <p><strong>Post Type:</strong> <?= htmlspecialchars($post['post_type']) ?></p>
-            <p><strong>Category:</strong> <?= htmlspecialchars($post['category_name']) ?></p>
-            <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($post['item_description'])) ?></p>
-            <p><strong>Location:</strong> <?= htmlspecialchars($post['location_reported']) ?></p>
-            <p><strong>Contact Info:</strong> <?= htmlspecialchars($post['contact_info']) ?></p>
-            <p><strong>Status:</strong> <?= htmlspecialchars($post['item_status']) ?></p>
-        </div>
 
 
-<!-- Post Actions -->
-<div class="mt-6 flex justify-end space-x-4">
-    <?php if ($_SESSION['user_id'] == $post['user_id']): ?>
-        <a href="edit_post.php?post_id=<?= $post_id ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Edit Post</a>
-        <form action="post_details.php?post_id=<?= $post_id ?>" method="POST" onsubmit="return confirm('Delete post?');">
-            <button type="submit" name="delete_post" class="bg-red-600 text-white px-4 py-2 rounded-lg">Delete Post</button>
-        </form>
-    <?php endif; ?>
-</div>
-
-
+            <!-- Post Actions:Edit and Delete -->
+            <div class="mt-6 flex justify-end space-x-4">
+                <?php if ($_SESSION['user_id'] == $post['user_id']): ?>
+                    <a href="edit_post.php?post_id=<?= $post_id ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Edit Post</a>
+                    <form action="post_details.php?post_id=<?= $post_id ?>" method="POST" onsubmit="return confirm('Delete post?');">
+                        <button type="submit" name="delete_post" class="bg-red-600 text-white px-4 py-2 rounded-lg">Delete Post</button>
+                    </form>
+                <?php endif; ?>
+            </div>
 
             <!-- Comments Section -->
             <div class="mt-10">
@@ -165,10 +158,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                 <?php foreach ($comments as $comment): ?>
                     <div class="bg-gray-100 p-4 rounded-lg mt-4">
                         <p><strong><?= htmlspecialchars($comment['commenter_name']) ?>:</strong></p>
-
-                        <!-- Show and edit comment -->
                         <?php if ($editing_comment_id == $comment['comment_id']): ?>
-                            <!-- Edit form -->
+
                             <form action="post_details.php?post_id=<?= $post_id ?>" method="POST">
                                 <textarea name="comment_text" class="w-full border p-2 rounded-lg"
                                     required><?= htmlspecialchars($comment['comment_text']) ?></textarea>
@@ -182,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                                 <input type="hidden" name="comment_id" value="<?= $comment['comment_id'] ?>">
                             </form>
                         <?php else: ?>
-                            <!-- if not user comment -->
+
                             <p><?= nl2br(htmlspecialchars($comment['comment_text'])) ?></p>
                             <p class="text-sm text-gray-500"><?= htmlspecialchars($comment['comment_date']) ?></p>
                         <?php endif; ?>
@@ -190,13 +181,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
 
                         <?php if ($_SESSION['user_id'] == $comment['user_id'] && !$editing_comment_id): ?>
                             <div class="mt-2 flex space-x-2">
-                                <!-- Edit  -->
+
                                 <form action="post_details.php?post_id=<?= $post_id ?>" method="POST">
                                     <button type="submit" name="edit_comment_request"
                                         class="bg-blue-600 text-white px-2 py-1 rounded-lg">Edit</button>
                                     <input type="hidden" name="comment_id" value="<?= $comment['comment_id'] ?>">
                                 </form>
-                                <!-- Delete  -->
+
                                 <form action="post_details.php?post_id=<?= $post_id ?>" method="POST"
                                     onsubmit="return confirm('Delete comment?');">
                                     <button type="submit" name="delete_comment"
@@ -218,11 +209,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_text']) && iss
                     </form>
                 <?php endif; ?>
             </div>
-
         </div>
     </div>
 </body>
-
 </html>
 
 <?php include 'templates/footer.php'; ?>

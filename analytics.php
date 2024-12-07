@@ -1,14 +1,13 @@
 <?php
 session_start(); 
+include 'includes/db.php';
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-
-include 'includes/db.php';
 include 'templates/header.php';
-
 
 $dateRange = isset($_GET['dateRange']) ? $_GET['dateRange'] : 'all';
 $dateFilterCondition = '';
@@ -68,7 +67,6 @@ $categoryQuery = $pdo->query("
 ");
 $categories = $categoryQuery->fetchAll(PDO::FETCH_ASSOC);
 
-
 $userActivityQuery = $pdo->query("
     SELECT u.name, 
            COUNT(*) as total_posts,
@@ -83,6 +81,8 @@ $userActivityQuery = $pdo->query("
 ");
 $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,8 +101,6 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
             <p class="text-2xl font-medium text-gray-700 max-w-2xl mx-auto leading-relaxed">
             Detailed analytics dashboard for lost and found management
             </p>
-            <br>
-            
             <div class="mb-4">
                 <select id="dateRangeSelector" class="mx-auto bg-gray-200 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-purple-800 focus:border-purple-800 ">
                     <option value="all" <?= $dateRange == 'all' ? 'selected' : '' ?>>All Time</option>

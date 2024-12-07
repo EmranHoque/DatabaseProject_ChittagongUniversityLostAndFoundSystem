@@ -17,8 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $item_status = 'Pending';
     $category_id = $_POST['category_id'];
     $user_id = $_SESSION['user_id'];
-
-    // Handle image upload
     $image_path = null;
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $upload_dir = 'uploads/'; // Directory to store uploaded images
@@ -45,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Insert post data into the database
+    
     $sql = "INSERT INTO post (title, location_reported, date_reported, item_description, post_type, item_status, category_id, user_id, image_path)
             VALUES (:title, :location, :date_reported, :item_description, :post_type, :item_status, :category_id, :user_id, :image_path)";
     $stmt = $pdo->prepare($sql);
@@ -69,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Fetch categories for the dropdown
 $sql = "SELECT * FROM category";
 $categories = $pdo->query($sql)->fetchAll();
 ?>
@@ -84,19 +81,16 @@ $categories = $pdo->query($sql)->fetchAll();
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-200">
-    <!-- Main Section -->
     <div class="max-w-xl mx-auto py-12 px-4">
         <div class="flex justify-center mb-8">
             <h1 class="text-3xl font-extrabold text-gray-900">Create a Post</h1>
         </div>
         <form action="create_post.php" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-md">
-            <!-- Title -->
             <div class="mb-6">
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
                 <input type="text" id="title" name="title" required placeholder="Enter a brief title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
 
-            <!-- Post Type -->
             <div class="mb-6">
                 <label for="post_type" class="block text-sm font-medium text-gray-700">Post Type</label>
                 <select id="post_type" name="post_type" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
@@ -105,7 +99,6 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-            <!-- Category -->
             <div class="mb-6">
                 <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
                 <select id="category_id" name="category_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
@@ -115,13 +108,11 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-            <!-- Date of Incident -->
             <div class="mb-6">
                 <label for="date_reported" class="block text-sm font-medium text-gray-700">Date of Incident</label>
                 <input type="date" id="date_reported" name="date_reported" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
             
-            <!-- Location -->
             <div class="mb-6">
                 <label for="location" class="block text-sm font-medium text-gray-700">Location Reported</label>
                 <select id="location" name="location" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
@@ -162,19 +153,16 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-            <!-- Description -->
             <div class="mb-6">
                 <label for="item_description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea id="item_description" name="item_description" rows="4" required placeholder="Provide details about the item" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"></textarea>
             </div>
 
-            <!-- Image Upload -->
             <div class="mb-6">
                 <label for="image" class="block text-sm font-medium text-gray-700">Upload Image</label>
                 <input type="file" id="image" name="image" accept="image/*" class="mt-1 block w-full text-gray-600 sm:text-sm">
             </div>
 
-            <!-- Submit Button -->
             <div class="flex justify-end">
                 <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">Submit</button>
             </div>

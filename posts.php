@@ -3,20 +3,18 @@ require 'includes/db.php';
 session_start(); 
 include 'templates/header.php';
 
-// check if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
 
-// Fetch posts with filters
+
 $sql = "SELECT p.*, c.category_name, u.name AS user_name 
         FROM post p
         JOIN category c ON p.category_id = c.category_id
         JOIN user u ON p.user_id = u.user_id
         WHERE 1=1";
 
-// Apply filters
 if (!empty($_GET['post_type'])) {
     $sql .= " AND p.post_type = :post_type";
 }
@@ -28,7 +26,7 @@ if (!empty($_GET['search'])) {
 }
 $sql .= " ORDER BY p.created_at DESC";
 
-// Prepare and execute statement
+
 $stmt = $pdo->prepare($sql);
 if (!empty($_GET['post_type'])) {
     $stmt->bindValue(':post_type', $_GET['post_type']);
@@ -43,10 +41,11 @@ if (!empty($_GET['search'])) {
 $stmt->execute();
 $posts = $stmt->fetchAll();
 
-// Fetch all categories for the dropdown
+
 $categoriesStmt = $pdo->query("SELECT category_name FROM category");
 $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +60,6 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
     <section class="py-8">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-3xl font-semibold text-gray-900">Browse Posts</h2>
-            
             <form method="GET" class="mt-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
                 <div class="flex space-x-4">
                     <!-- Category Dropdown -->
@@ -75,7 +73,7 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php endforeach; ?>
                     </select>
 
-                    <!-- Post Type Dropdown -->
+                    <!-- Post Type -->
                     <select name="post_type" class="form-select bg-gray-50 border border-gray-400 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <option value="">All Post Types</option>
                         <option value="lost" <?= isset($_GET['post_type']) && $_GET['post_type'] === 'lost' ? 'selected' : '' ?>>Lost</option>
@@ -103,7 +101,6 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
                                 <?= htmlspecialchars($post['post_type']) ?>
                             </div>
 
-                            <!-- Post Content -->
                             <div class="mt-4">
                                 <p class="text-xl font-semibold text-gray-900"><?= htmlspecialchars($post['title']) ?></p>
                                 <p class="text-sm text-gray-500 mt-2">
@@ -117,7 +114,6 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
                                 </p>
                             </div>
 
-                            <!-- View Details Button -->
                             <a href="post_details.php?post_id=<?= $post['post_id'] ?>" 
                                class="text-purple-600 hover:text-purple-800 block mt-4 text-center">
                                 View Details

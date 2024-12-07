@@ -16,7 +16,6 @@ if (!isset($_GET['post_id'])) {
 $post_id = $_GET['post_id'];
 $user_id = $_SESSION['user_id'];
 
-// Fetch the post details
 $sql = "SELECT p.*, u.phone_number 
         FROM post p 
         INNER JOIN user u ON p.user_id = u.user_id 
@@ -29,7 +28,6 @@ if (!$post) {
     die("Post not found or you do not have permission to edit this post.");
 }
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
     $location = $_POST['location'];
@@ -38,18 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $post_type = $_POST['post_type'];
     $item_status = $_POST['item_status'];
     $category_id = $_POST['category_id'];
-    $image_path = $post['image_path']; // Retain the existing image path by default
+    $image_path = $post['image_path']; 
 
-    // Handle image upload
     if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] == 0) {
         $upload_dir = 'uploads/';
         $image_name = basename($_FILES['image']['name']);
         $target_file = $upload_dir . time() . '_' . $image_name;
 
-        // Check if the file is an image
         $image_type = mime_content_type($_FILES['image']['tmp_name']);
         if (in_array($image_type, ['image/jpeg', 'image/png', 'image/gif'])) {
-            // Move the uploaded file to the target directory
             if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
                 $image_path = $target_file;
             } else {
@@ -60,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Update post in the database
     $sql = "UPDATE post 
             SET title = :title, location_reported = :location, date_reported = :date_reported, 
                 item_description = :item_description, post_type = :post_type, 
@@ -88,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Fetch categories
+
 $sql = "SELECT * FROM category";
 $categories = $pdo->query($sql)->fetchAll();
 ?>
@@ -103,13 +97,11 @@ $categories = $pdo->query($sql)->fetchAll();
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-200">
-    <!-- Main Section -->
     <div class="max-w-xl mx-auto py-12 px-4">
         <div class="flex justify-center mb-8">
             <h1 class="text-3xl font-extrabold text-gray-900">Edit Post</h1>
         </div>
         <form action="edit_post.php?post_id=<?= htmlspecialchars($post_id) ?>" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-md">
-            <!-- Post Type -->
             <div class="mb-6">
                 <label for="post_type" class="block text-sm font-medium text-gray-700">Post Type</label>
                 <select id="post_type" name="post_type" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
@@ -118,13 +110,11 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-            <!-- Title -->
             <div class="mb-6">
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
                 <input type="text" id="title" name="title" value="<?= htmlspecialchars($post['title']) ?>" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
             </div>
 
-            <!-- Category -->
             <div class="mb-6">
                 <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
                 <select id="category_id" name="category_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
@@ -136,7 +126,6 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-            <!-- Location -->
             <div class="mb-6">
                 <label for="location" class="block text-sm font-medium text-gray-700">Location Reported</label>
                 <select id="location" name="location" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
@@ -176,8 +165,7 @@ $categories = $pdo->query($sql)->fetchAll();
                     <option value="Chittagong University School & College" <?= $post['location_reported'] == 'Chittagong University School & College' ? 'selected' : '' ?>>Chittagong University School & College</option>
                 </select>
             </div>
-            
-            <!-- Status -->
+ 
             <div class="mb-6">
                 <label for="item_status" class="block text-sm font-medium text-gray-700">Item Status</label>
                 <select id="item_status" name="item_status" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
@@ -186,13 +174,11 @@ $categories = $pdo->query($sql)->fetchAll();
                 </select>
             </div>
 
-            <!-- Description -->
             <div class="mb-6">
                 <label for="item_description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea id="item_description" name="item_description" rows="4" required placeholder="Provide details about the item" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"><?= htmlspecialchars($post['item_description']) ?></textarea>
             </div>
 
-            <!-- Image Upload -->
             <div class="mb-6">
                 <label for="image" class="block text-sm font-medium text-gray-700">Upload Image</label>
                 <?php if (!empty($post['image_path'])): ?>
@@ -205,10 +191,6 @@ $categories = $pdo->query($sql)->fetchAll();
                 <p class="text-sm text-gray-500">Leave empty to keep the current image.</p>
             </div>
 
-
-            
-
-            <!-- Submit Button -->
             <div class="flex justify-end">
                 <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:opacity-90">Save Changes</button>
             </div>

@@ -8,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // Email validation
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email format.";
     } else {
@@ -49,32 +48,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-200">
-   
-
-    <!-- Authentication Section -->
     <div class="max-w-md mx-auto py-12 px-4">
         <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">Login to your Account</h1>
         <form action="login.php" method="POST" class="bg-white p-8 rounded-lg shadow-md">
-            
             <?php if (isset($error)): ?>
                 <div class="mb-4 text-red-500 text-sm">
                     <?= htmlspecialchars($error) ?>
                 </div>
             <?php endif; ?>
 
-            <!-- Email -->
             <div class="mb-6">
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" id="email" name="email" required placeholder="Enter your email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
 
-            <!-- Password -->
             <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <input type="password" id="password" name="password" required placeholder="Enter your password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
             </div>
 
-            <!-- Submit Button -->
             <div class="flex justify-center items-center">
                 <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300">Log In</button>
             </div>

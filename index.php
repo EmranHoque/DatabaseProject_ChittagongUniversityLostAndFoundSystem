@@ -1,11 +1,10 @@
 <?php 
 session_start(); 
 include 'templates/header.php';
-require 'includes/db.php'; // Include database connection
+require 'includes/db.php'; 
 
 $loggedIn = isset($_SESSION['user_id']) ? true : false;
 
-// Fetch analytics data
 $sql = "SELECT 
             COUNT(CASE WHEN post_type = 'Lost' THEN 1 END) AS total_lost,
             COUNT(CASE WHEN post_type = 'Found' THEN 1 END) AS total_found,
@@ -24,6 +23,7 @@ $stats = $stmt->fetch();
     <title>Chittagong University Lost & Found</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gray-200">
@@ -90,9 +90,8 @@ $stats = $stmt->fetch();
         <div class="max-w-6xl mx-auto px-12 bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">System Analytics</h2>
 
-            <!-- Top Section: Grids and Pie Chart -->
+            <!-- Status analysis section -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-gray-100 p-6 rounded-lg shadow-md">
-                <!-- 4x4 Grids for Post Stats -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-yellow-200 p-6 rounded-lg shadow-md text-center">
                         <h3 class="text-lg font-semibold">Total Lost</h3>
@@ -112,116 +111,106 @@ $stats = $stmt->fetch();
                     </div>
                 </div>
 
-                <!-- Pie Chart for Post Status -->
                 <div>
                     <canvas id="pieChart" width="300" height="300" class="mx-auto"></canvas>
+                    <script>
+                        const pieCtx = document.getElementById('pieChart').getContext('2d');
+                        const pieChart = new Chart(pieCtx, {
+                            type: 'pie',
+                            data: {
+                                labels: ['Resolved', 'Pending'],
+                                datasets: [{
+                                    data: [<?= htmlspecialchars($stats['resolved']) ?>, <?= htmlspecialchars($stats['unresolved']) ?>],
+                                    backgroundColor: ['#34D399', '#F87171'], // Resolved: Green, Unresolved: Red
+                                    hoverOffset: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                    }
+                                }
+                            }
+                        });
+                    </script>
                 </div>
             </div>
 
-            <!-- Bottom Section: Bar Chart Only -->
+            <!-- Location analysis section: Top 5 locations -->
             <div class="mt-12">
-                <!-- Horizontal Bar Chart -->
                 <div class="bg-gray-100 p-6 rounded-lg shadow-md">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Location Analysis: Top 5 locations with most reports</h3>
                     <div class="overflow-hidden">
                         <canvas id="barChart"></canvas>
+                        <script>
+                            const barCtx = document.getElementById('barChart').getContext('2d');
+                            const barData = {
+                                labels: [<?php
+                                    $locationSql = "SELECT location_reported, COUNT(*) as post_count 
+                                                    FROM post 
+                                                    GROUP BY location_reported 
+                                                    ORDER BY post_count DESC 
+                                                    LIMIT 5";
+                                    $locationNames = [];
+                                    $postCounts = [];
+                                    $locationStmt = $pdo->query($locationSql);
+                                    while ($location = $locationStmt->fetch()) {
+                                        $locationNames[] = '"' . $location['location_reported'] . '"';
+                                        $postCounts[] = $location['post_count'];
+                                    }
+                                    echo implode(',', $locationNames);
+                                ?>],
+                                datasets: [{
+                                    label: 'Number of Posts',
+                                    data: [<?= implode(',', $postCounts) ?>],
+                                    backgroundColor: '#F44336',
+                                    borderWidth: 1
+                                }]
+                            };
+
+                            const barChart = new Chart(barCtx, {
+                                type: 'bar',
+                                data: barData,
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false, 
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        },
+                                    },
+                                    indexAxis: 'y', 
+                                    scales: {
+                                        x: {
+                                            title: {
+                                                display: true,
+                                                text: 'Number of Posts'
+                                            },
+                                            beginAtZero: true,
+                                            ticks: {
+                                                maxTicksLimit: 5,
+                                            }
+                                        },
+                                        y: {
+                                            title: {
+                                                display: true,
+                                                text: 'Locations'
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                            document.getElementById('barChart').style.height = '300px'; 
+                        </script>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Chart.js for Graphs -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Pie Chart: Resolved vs Unresolved
-        const pieCtx = document.getElementById('pieChart').getContext('2d');
-        const pieChart = new Chart(pieCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Resolved', 'Pending'],
-                datasets: [{
-                    data: [<?= htmlspecialchars($stats['resolved']) ?>, <?= htmlspecialchars($stats['unresolved']) ?>],
-                    backgroundColor: ['#34D399', '#F87171'], // Resolved: Green, Unresolved: Red
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    }
-                }
-            }
-        });
-
-        // Horizontal Bar Chart: Post Distribution by Location
-const barCtx = document.getElementById('barChart').getContext('2d');
-const barData = {
-    labels: [<?php
-        $locationSql = "SELECT location_reported, COUNT(*) as post_count 
-                        FROM post 
-                        GROUP BY location_reported 
-                        ORDER BY post_count DESC 
-                        LIMIT 5";
-        $locationNames = [];
-        $postCounts = [];
-        $locationStmt = $pdo->query($locationSql);
-        while ($location = $locationStmt->fetch()) {
-            $locationNames[] = '"' . $location['location_reported'] . '"';
-            $postCounts[] = $location['post_count'];
-        }
-        echo implode(',', $locationNames);
-    ?>],
-    datasets: [{
-        label: 'Number of Posts',
-        data: [<?= implode(',', $postCounts) ?>],
-        backgroundColor: '#F44336',
-        borderWidth: 1
-    }]
-};
-
-const barChart = new Chart(barCtx, {
-    type: 'bar',
-    data: barData,
-    options: {
-        responsive: true,
-        maintainAspectRatio: false, 
-        plugins: {
-            legend: {
-                display: false
-            },
-        },
-        indexAxis: 'y', 
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Number of Posts'
-                },
-                beginAtZero: true,
-                ticks: {
-                    maxTicksLimit: 5,
-                }
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Locations'
-                }
-            }
-        }
-    }
-});
-
-// Resize the canvas element to make the chart smaller
-document.getElementById('barChart').style.height = '300px'; // Adjust the height as needed
-
-    </script>
-
-
-
+    
 
 </body>
 </html>
