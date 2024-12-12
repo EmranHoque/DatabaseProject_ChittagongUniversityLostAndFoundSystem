@@ -1,7 +1,5 @@
 # Chittagong University Lost and Found System
 
-## Description
-
 The **Chittagong University Lost and Found System** is a web-based application designed to assist students in reporting and managing lost and found items. The platform simplifies locating misplaced items and facilitates communication between item owners and finders.
 
 ## Features
