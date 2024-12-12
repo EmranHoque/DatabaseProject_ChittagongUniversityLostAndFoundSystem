@@ -2,7 +2,7 @@
 
 ## Description
 
-The **Chittagong University Lost and Found System** is a web-based application designed to assist students and faculty in reporting and managing lost and found items. The platform simplifies locating misplaced items and facilitates communication between item owners and finders.
+The **Chittagong University Lost and Found System** is a web-based application designed to assist students in reporting and managing lost and found items. The platform simplifies locating misplaced items and facilitates communication between item owners and finders.
 
 ## Features
 
@@ -45,9 +45,10 @@ The **Chittagong University Lost and Found System** is a web-based application d
   - **Post an Item:**
     - Report a lost or found item by filling out the form. 
     - Include a detailed description, location, category, and optional image.
-  - **Browse Items:**
-    - View all reported items.
+  - **Browse and Search Posts:**
+    - View all reported posts.
     - Filter items by category or location.
+    - Search desired post.
   - **Interact:**
     - Comment on posts to share information or inquire about items.
   - **Profile Management:** 
@@ -60,7 +61,12 @@ The **Chittagong University Lost and Found System** is a web-based application d
     - A pie chart for category distribution alongside a list of category breakdown.
     - A pie chart for top user activity along with a list for user post details.
 
-## Future Enhancements
+## Future Work
+
+1. **Direct Communication Features**: Add functionality for users to directly message each other.
+2. **Cloud Deployment**: Migrate the system to cloud-based platforms to remove dependency on local server setups.
+3. **Enhanced Location Tracking**: Develop a dynamic map-based location selection feature to allow users to specify exact geographical locations.
+4. **Real-Time System Updates**: Implement live notification systems to increase user engagement and system responsiveness.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.

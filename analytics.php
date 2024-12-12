@@ -2,12 +2,14 @@
 session_start(); 
 include 'includes/db.php';
 
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
 include 'templates/header.php';
+
 
 $dateRange = isset($_GET['dateRange']) ? $_GET['dateRange'] : 'all';
 $dateFilterCondition = '';
@@ -231,10 +233,10 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Location Analysis Section -->
         <div style="bg-gray-100 p-6 rounded-lg shadow-md">
-            <div style="bg-gray-100 p-6 rounded-lg shadow-md">
-                <h2 class="section-title text-center font-semibold bg-gray-100 p-6 rounded-lg shadow-md text-2xl">Location Post Distribution</h2>
+            <div style="bg-gray-100 p-6">
+                <h2 class="section-title text-center font-semibold bg-gray-100 p-6 text-2xl">Location Post Distribution</h2>
             </div>
-            <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+            <div class="bg-gray-100 p-6">
                 <canvas id="barChart" height="400"></canvas>
             </div>
             <script>
@@ -283,9 +285,9 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
         <!-- Detailed Location List Section -->
         <div style="bg-gray-100 p-6 rounded-lg shadow-md">
             <div style="bg-gray-100 p-6 rounded-lg shadow-md">
-                <h2 class="section-title text-center font-semibold bg-gray-100 p-6 rounded-lg shadow-md text-2xl">Detailed Location Analysis</h2>
+                <h2 class="section-title text-center font-semibold bg-gray-100 p-6 text-2xl">Detailed Location Analysis</h2>
             </div>
-            <div class="p-8 bg-gray-100 rounded-lg shadow-md">
+            <div class="p-8 bg-gray-100">
                 <table class="w-full text-left">
                     <thead class="border-b">
                         <tr>
@@ -454,3 +456,5 @@ $userActivity = $userActivityQuery->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </body>
 </html>
+
+<?php include 'templates/footer.php'?>

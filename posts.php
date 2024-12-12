@@ -21,6 +21,9 @@ if (!empty($_GET['post_type'])) {
 if (!empty($_GET['category'])) {
     $sql .= " AND c.category_name = :category";
 }
+if (!empty($_GET['location'])) {
+    $sql .= " AND p.location_reported = :location";
+}
 if (!empty($_GET['search'])) {
     $sql .= " AND (p.title LIKE :search OR p.item_description LIKE :search)";
 }
@@ -34,13 +37,15 @@ if (!empty($_GET['post_type'])) {
 if (!empty($_GET['category'])) {
     $stmt->bindValue(':category', $_GET['category']);
 }
+if (!empty($_GET['location'])) {
+    $stmt->bindValue(':location', $_GET['location']);
+}
 if (!empty($_GET['search'])) {
     $searchTerm = '%' . $_GET['search'] . '%';
     $stmt->bindValue(':search', $searchTerm);
 }
 $stmt->execute();
 $posts = $stmt->fetchAll();
-
 
 $categoriesStmt = $pdo->query("SELECT category_name FROM category");
 $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -79,15 +84,62 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
                         <option value="lost" <?= isset($_GET['post_type']) && $_GET['post_type'] === 'lost' ? 'selected' : '' ?>>Lost</option>
                         <option value="found" <?= isset($_GET['post_type']) && $_GET['post_type'] === 'found' ? 'selected' : '' ?>>Found</option>
                     </select>
+
+                    <!-- Location Dropdown -->
+                    <select name="location" class="form-select bg-gray-50 border border-gray-400 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">All Locations</option>
+                        <option value="1 No. Gate Area" <?= isset($_GET['location']) && $_GET['location'] === '1 No. Gate Area' ? 'selected' : '' ?>>1 No. Gate Area</option>
+                        <option value="2 No. Gate Area" <?= isset($_GET['location']) && $_GET['location'] === '2 No. Gate Area' ? 'selected' : '' ?>>2 No. Gate Area</option>
+                        <option value="Zero Point" <?= isset($_GET['location']) && $_GET['location'] === 'Zero Point' ? 'selected' : '' ?>>Zero Point</option>
+                        <option value="Shaheed Minar" <?= isset($_GET['location']) && $_GET['location'] === 'Shaheed Minar' ? 'selected' : '' ?>>Shaheed Minar</option>
+                        <option value="Central Library" <?= isset($_GET['location']) && $_GET['location'] === 'Central Library' ? 'selected' : '' ?>>Central Library</option>
+                        <option value="Gymnasium" <?= isset($_GET['location']) && $_GET['location'] === 'Gymnasium' ? 'selected' : '' ?>>Gymnasium</option>
+                        <option value="Botanical Garden" <?= isset($_GET['location']) && $_GET['location'] === 'Botanical Garden' ? 'selected' : '' ?>>Botanical Garden</option>
+                        <option value="Chittagong University Medical Center" <?= isset($_GET['location']) && $_GET['location'] === 'Chittagong University Medical Center' ? 'selected' : '' ?>>Chittagong University Medical Center</option>
+                        <option value="Jamal Nazrul Islam Research Centre" <?= isset($_GET['location']) && $_GET['location'] === 'Jamal Nazrul Islam Research Centre' ? 'selected' : '' ?>>Jamal Nazrul Islam Research Centre</option>
+                        <option value="Institute of Forestry and Environmental Sciences" <?= isset($_GET['location']) && $_GET['location'] === 'Institute of Forestry and Environmental Sciences' ? 'selected' : '' ?>>Institute of Forestry and Environmental Sciences</option>
+                        <option value="Faculty of Engineering" <?= isset($_GET['location']) && $_GET['location'] === 'Faculty of Engineering' ? 'selected' : '' ?>>Faculty of Engineering</option>
+                        <option value="Faculty of Science" <?= isset($_GET['location']) && $_GET['location'] === 'Faculty of Science' ? 'selected' : '' ?>>Faculty of Science</option>
+                        <option value="Faculty of Biological Science" <?= isset($_GET['location']) && $_GET['location'] === 'Faculty of Biological Science' ? 'selected' : '' ?>>Faculty of Biological Science</option>
+                        <option value="Institute of Marine Science" <?= isset($_GET['location']) && $_GET['location'] === 'Institute of Marine Science' ? 'selected' : '' ?>>Institute of Marine Science</option>
+                        <option value="Faculty of Social Sciences" <?= isset($_GET['location']) && $_GET['location'] === 'Faculty of Social Sciences' ? 'selected' : '' ?>>Faculty of Social Sciences</option>
+                        <option value="Faculty of Business Administration" <?= isset($_GET['location']) && $_GET['location'] === 'Faculty of Business Administration' ? 'selected' : '' ?>>Faculty of Business Administration</option>
+                        <option value="Faculty of Law" <?= isset($_GET['location']) && $_GET['location'] === 'Faculty of Law' ? 'selected' : '' ?>>Faculty of Law</option>
+                        <option value="Alaol Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Alaol Hall' ? 'selected' : '' ?>>Alaol Hall</option>
+                        <option value="A. F. Rahman Hall" <?= isset($_GET['location']) && $_GET['location'] === 'A. F. Rahman Hall' ? 'selected' : '' ?>>A. F. Rahman Hall</option>
+                        <option value="Shahjalal Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Shahjalal Hall' ? 'selected' : '' ?>>Shahjalal Hall</option>
+                        <option value="Suhrawardy Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Suhrawardy Hall' ? 'selected' : '' ?>>Suhrawardy Hall</option>
+                        <option value="Shah Amanat Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Shah Amanat Hall' ? 'selected' : '' ?>>Shah Amanat Hall</option>
+                        <option value="Shamsun Nahar Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Shamsun Nahar Hall' ? 'selected' : '' ?>>Shamsun Nahar Hall</option>
+                        <option value="Shaheed Abdur Rab Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Shaheed Abdur Rab Hall' ? 'selected' : '' ?>>Shaheed Abdur Rab Hall</option>
+                        <option value="Pritilata Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Pritilata Hall' ? 'selected' : '' ?>>Pritilata Hall</option>
+                        <option value="Deshnetri Begum Khaleda Zia Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Deshnetri Begum Khaleda Zia Hall' ? 'selected' : '' ?>>Deshnetri Begum Khaleda Zia Hall</option>
+                        <option value="Masterda Suriya Sen Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Masterda Suriya Sen Hall' ? 'selected' : '' ?>>Masterda Suriya Sen Hall</option>
+                        <option value="Bangabandhu Sheikh Mujibur Rahman Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Bangabandhu Sheikh Mujibur Rahman Hall' ? 'selected' : '' ?>>Bangabandhu Sheikh Mujibur Rahman Hall</option>
+                        <option value="Janonetri Sheikh Hasina Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Janonetri Sheikh Hasina Hall' ? 'selected' : '' ?>>Janonetri Sheikh Hasina Hall</option>
+                        <option value="Bangamata Sheikh Fazilatunnesa Mujib Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Bangamata Sheikh Fazilatunnesa Mujib Hall' ? 'selected' : '' ?>>Bangamata Sheikh Fazilatunnesa Mujib Hall</option>
+                        <option value="Artist Rashid Chowdhury Hostel" <?= isset($_GET['location']) && $_GET['location'] === 'Artist Rashid Chowdhury Hostel' ? 'selected' : '' ?>>Artist Rashid Chowdhury Hostel</option>
+                        <option value="Atish Dipangkar Srigyan Hall" <?= isset($_GET['location']) && $_GET['location'] === 'Atish Dipangkar Srigyan Hall' ? 'selected' : '' ?>>Atish Dipangkar Srigyan Hall</option>
+                        <option value="Chittagong University School & College" <?= isset($_GET['location']) && $_GET['location'] === 'Chittagong University School & College' ? 'selected' : '' ?>>Chittagong University School & College</option>
+                    </select>
                 </div>
 
                 <!-- Search Input -->
                 <input type="text" name="search" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>" 
-                       placeholder="Search posts..." 
-                       class="border border-gray-400 rounded-md py-2 px-4 w-full md:w-84 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    placeholder="Search posts..." 
+                    class="border border-gray-400 rounded-md py-2 px-4 w-full md:w-84 focus:outline-none focus:ring-2 focus:ring-purple-500">
                 
-                <!-- Submit Button -->
-                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition">Filter</button>
+                <!-- Button Container -->
+                <div class="flex space-x-2">
+                    <!-- Filter Button -->
+                    <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition">Filter</button>
+                    
+                    <!-- Reset Button -->
+                    <button type="button" onclick="window.location.href='<?= $_SERVER['PHP_SELF'] ?>'" 
+                            class="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition">
+                        Reset
+                    </button>
+                </div>
             </form>
 
             <!-- Posts Section -->
@@ -131,3 +183,6 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
 </html>
 
 <?php include 'templates/footer.php'; ?>
+
+
+
