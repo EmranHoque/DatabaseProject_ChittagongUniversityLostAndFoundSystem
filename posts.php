@@ -64,7 +64,9 @@ $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Filters Section -->
     <section class="py-8">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-semibold text-gray-900">Browse Posts</h2>
+            <div class="flex justify-center mb-8">
+                <h1 class="text-5xl font-extrabold text-gray-900">Browse Posts</h1>
+            </div>
             <form method="GET" class="mt-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
                 <div class="flex space-x-4">
                     <!-- Category Dropdown -->

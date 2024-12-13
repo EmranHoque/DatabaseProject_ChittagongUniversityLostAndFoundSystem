@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body class="bg-gray-200">
     <div class="max-w-md mx-auto py-12 px-4">
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">Edit Profile</h1>
+        <h1 class="text-5xl font-extrabold text-gray-900 mb-6 text-center">Edit Profile</h1>
         <form action="edit_profile.php" method="POST" class="bg-white p-8 rounded-lg shadow-md">
             <?php if (isset($success)): ?>
                 <div class="mb-4 text-green-500 text-sm">

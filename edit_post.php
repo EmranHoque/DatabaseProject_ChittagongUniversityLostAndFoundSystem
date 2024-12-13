@@ -99,7 +99,7 @@ $categories = $pdo->query($sql)->fetchAll();
 <body class="bg-gray-200">
     <div class="max-w-xl mx-auto py-12 px-4">
         <div class="flex justify-center mb-8">
-            <h1 class="text-3xl font-extrabold text-gray-900">Edit Post</h1>
+            <h1 class="text-5xl font-extrabold text-gray-900">Edit Post</h1>
         </div>
         <form action="edit_post.php?post_id=<?= htmlspecialchars($post_id) ?>" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-md">
             <div class="mb-6">
