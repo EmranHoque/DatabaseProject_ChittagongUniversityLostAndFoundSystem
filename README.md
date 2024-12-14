@@ -30,7 +30,7 @@ The **Chittagong University Lost and Found System** is a web-based application d
 3. **Set Up the Server:**
   - Create a new MySQL database.
   - Import the SQL schema located in the /schema directory.
-  - Update the database connection details in db/db.php to match your setup.
+  - Update the database connection details in includes/db.php to match your setup.
 4. **Run the Application:**
   - Start your Apache and MySQL server.
   - Access the application via your browser by navigating to http://localhost/index.php.
